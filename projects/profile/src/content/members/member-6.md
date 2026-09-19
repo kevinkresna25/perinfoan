@@ -4,6 +4,7 @@ nickname: "Slot #6"
 role: "QA & Chaos Engineer"
 avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
 bio: "Template profil untuk anggota grup ke-6. Tempat menemukan bug sebelum user lain menemukannya."
+quote: "Kalau bisa dibuat crash, pasti akan ku-crash."
 skills:
   - "Testing"
   - "Automation"

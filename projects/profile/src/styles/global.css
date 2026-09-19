@@ -2,37 +2,261 @@
 
 @layer base {
   :root {
-    --bg-main: #090a0f;
-    --surface-card: #0f121d;
-    --surface-card-hover: #161a29;
-    --border-subtle: #1c2333;
-    --border-active: #2e3852;
-    --accent-cyan: #00f0ff;
-    --accent-emerald: #10b981;
-    --text-primary: #f3f4f6;
-    --text-secondary: #9ca3af;
-    --text-tertiary: #6b7280;
+    --bg-paper: #f7f4ec;
+    --bg-card: #ffffff;
+    --bg-card-muted: #ede8d8;
+    --bg-card-inner: #f7f4ec;
+    --bg-window: #181715;
+    --ink-black: #181715;
+    --ink-muted: #59554a;
+    --ink-subtle: #7d7767;
+    --vermilion: #c93b1d;
+    --vermilion-hover: #b03015;
+    --border-ink: #181715;
+    --border-subtle: #ded8c4;
+    --border-card: #181715;
+    --border-inner: #eeeeee;
+    --badge-bg: #181715;
+    --badge-text: #f7f4ec;
+    --gold-tape-bg: #fef08a;
+    --gold-tape-border: #181715;
+    --gold-tape-text: #854d0e;
+    --gold-tape-subtle: #a16207;
+    --shadow-color: #181715;
+
+    /* 3D Physical Shadows */
+    --shadow-sm-3d: 2px 2px 0px #181715;
+    --shadow-sm-3d-hover: 3px 3px 0px #181715;
+    --shadow-tape-3d: 3px 3px 0px #181715;
+    --shadow-card-3d: 4px 4px 0px #181715;
+    --shadow-card-3d-hover: 6px 7px 0px #181715;
+    --shadow-project-3d: 5px 5px 0px #181715;
+    --shadow-project-3d-hover: 7px 7px 0px #181715;
+    --shadow-guide-3d: 6px 6px 0px #181715;
+    --shadow-btn-3d: 4px 4px 0px #181715;
+    --shadow-btn-3d-hover: 6px 6px 0px #181715;
+
+    --selection-bg: #181715;
+    --selection-text: #f7f4ec;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg-paper: #0c0b0a;
+      --bg-card: #201e19;
+      --bg-card-muted: #151412;
+      --bg-card-inner: #191815;
+      --bg-window: #080706;
+      --ink-black: #f5f1e8;
+      --ink-muted: #aba598;
+      --ink-subtle: #7d776c;
+      --vermilion: #e04d2d;
+      --vermilion-hover: #f05a39;
+      --border-ink: #423d35;
+      --border-subtle: #2b2823;
+      --border-card: #4a443c;
+      --border-inner: #2d2a25;
+      --badge-bg: #f5f1e8;
+      --badge-text: #0c0b0a;
+      --gold-tape-bg: #2d2611;
+      --gold-tape-border: #635322;
+      --gold-tape-text: #fef08a;
+      --gold-tape-subtle: #eab308;
+      --shadow-color: #000000;
+
+      /* 3D Physical Shadows with visible extrusion block */
+      --shadow-sm-3d: 2px 2px 0px #000000, 2px 2px 0px 1.5px #554e44;
+      --shadow-sm-3d-hover: 3px 3px 0px #000000, 3px 3px 0px 1.5px #554e44;
+      --shadow-tape-3d: 3px 3px 0px #000000, 3px 3px 0px 1.5px #635322;
+      --shadow-card-3d: 4px 4px 0px #000000, 4px 4px 0px 1.5px #524c44, 0 10px 24px rgba(0, 0, 0, 0.85);
+      --shadow-card-3d-hover: 6px 7px 0px #000000, 6px 7px 0px 1.5px #524c44, 0 16px 36px rgba(0, 0, 0, 0.95);
+      --shadow-project-3d: 5px 5px 0px #000000, 5px 5px 0px 1.5px #524c44, 0 12px 28px rgba(0, 0, 0, 0.85);
+      --shadow-project-3d-hover: 7px 7px 0px #000000, 7px 7px 0px 1.5px #524c44, 0 18px 40px rgba(0, 0, 0, 0.95);
+      --shadow-guide-3d: 6px 6px 0px #000000, 6px 6px 0px 1.5px #524c44, 0 14px 32px rgba(0, 0, 0, 0.85);
+      --shadow-btn-3d: 4px 4px 0px #000000, 4px 4px 0px 1.5px #524c44;
+      --shadow-btn-3d-hover: 6px 6px 0px #000000, 6px 6px 0px 1.5px #524c44;
+
+      --selection-bg: #e04d2d;
+      --selection-text: #ffffff;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg-paper: #0c0b0a;
+    --bg-card: #201e19;
+    --bg-card-muted: #151412;
+    --bg-card-inner: #191815;
+    --bg-window: #080706;
+    --ink-black: #f5f1e8;
+    --ink-muted: #aba598;
+    --ink-subtle: #7d776c;
+    --vermilion: #e04d2d;
+    --vermilion-hover: #f05a39;
+    --border-ink: #423d35;
+    --border-subtle: #2b2824;
+    --border-card: #4a443c;
+    --border-inner: #2d2a25;
+    --badge-bg: #f5f1e8;
+    --badge-text: #0c0b0a;
+    --gold-tape-bg: #2d2611;
+    --gold-tape-border: #635322;
+    --gold-tape-text: #fef08a;
+    --gold-tape-subtle: #eab308;
+    --shadow-color: #000000;
+
+    /* 3D Physical Shadows with visible extrusion block */
+    --shadow-sm-3d: 2px 2px 0px #000000, 2px 2px 0px 1.5px #554e44;
+    --shadow-sm-3d-hover: 3px 3px 0px #000000, 3px 3px 0px 1.5px #554e44;
+    --shadow-tape-3d: 3px 3px 0px #000000, 3px 3px 0px 1.5px #635322;
+    --shadow-card-3d: 4px 4px 0px #000000, 4px 4px 0px 1.5px #524c44, 0 10px 24px rgba(0, 0, 0, 0.85);
+    --shadow-card-3d-hover: 6px 7px 0px #000000, 6px 7px 0px 1.5px #524c44, 0 16px 36px rgba(0, 0, 0, 0.95);
+    --shadow-project-3d: 5px 5px 0px #000000, 5px 5px 0px 1.5px #524c44, 0 12px 28px rgba(0, 0, 0, 0.85);
+    --shadow-project-3d-hover: 7px 7px 0px #000000, 7px 7px 0px 1.5px #524c44, 0 18px 40px rgba(0, 0, 0, 0.95);
+    --shadow-guide-3d: 6px 6px 0px #000000, 6px 6px 0px 1.5px #524c44, 0 14px 32px rgba(0, 0, 0, 0.85);
+    --shadow-btn-3d: 4px 4px 0px #000000, 4px 4px 0px 1.5px #524c44;
+    --shadow-btn-3d-hover: 6px 6px 0px #000000, 6px 6px 0px 1.5px #524c44;
+
+    --selection-bg: #e04d2d;
+    --selection-text: #ffffff;
+  }
+
+  :root[data-theme="light"] {
+    --bg-paper: #f7f4ec;
+    --bg-card: #ffffff;
+    --bg-card-muted: #ede8d8;
+    --bg-card-inner: #f7f4ec;
+    --bg-window: #181715;
+    --ink-black: #181715;
+    --ink-muted: #59554a;
+    --ink-subtle: #7d7767;
+    --vermilion: #c93b1d;
+    --vermilion-hover: #b03015;
+    --border-ink: #181715;
+    --border-subtle: #ded8c4;
+    --border-card: #181715;
+    --border-inner: #eeeeee;
+    --badge-bg: #181715;
+    --badge-text: #f7f4ec;
+    --gold-tape-bg: #fef08a;
+    --gold-tape-border: #181715;
+    --gold-tape-text: #854d0e;
+    --gold-tape-subtle: #a16207;
+    --shadow-color: #181715;
+
+    /* 3D Physical Shadows */
+    --shadow-sm-3d: 2px 2px 0px #181715;
+    --shadow-sm-3d-hover: 3px 3px 0px #181715;
+    --shadow-tape-3d: 3px 3px 0px #181715;
+    --shadow-card-3d: 4px 4px 0px #181715;
+    --shadow-card-3d-hover: 6px 7px 0px #181715;
+    --shadow-project-3d: 5px 5px 0px #181715;
+    --shadow-project-3d-hover: 7px 7px 0px #181715;
+    --shadow-guide-3d: 6px 6px 0px #181715;
+    --shadow-btn-3d: 4px 4px 0px #181715;
+    --shadow-btn-3d-hover: 6px 6px 0px #181715;
+
+    --selection-bg: #181715;
+    --selection-text: #f7f4ec;
   }
 
   html {
     scroll-behavior: smooth;
+    background-color: var(--bg-paper);
+    color: var(--ink-black);
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   body {
-    background-color: #090a0f;
-    color: #f3f4f6;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--bg-paper);
+    color: var(--ink-black);
+    font-family: 'Epilogue', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     overflow-x: hidden;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   ::selection {
-    background-color: #00f0ff;
-    color: #090a0f;
+    background-color: var(--selection-bg);
+    color: var(--selection-text);
   }
 
   :focus-visible {
-    outline: 2px solid #00f0ff;
-    outline-offset: 2px;
+    outline: 2px solid var(--vermilion);
+    outline-offset: 3px;
+  }
+
+  /* Physical Shadow Classes */
+  .card-physical {
+    box-shadow: var(--shadow-card-3d);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  @media (hover: hover) {
+    .card-physical:hover {
+      transform: translate(-2px, -3px);
+      box-shadow: var(--shadow-card-3d-hover);
+    }
+  }
+  .card-physical:active {
+    transform: translate(1px, 1px);
+    box-shadow: var(--shadow-sm-3d);
+  }
+
+  .project-card-physical {
+    box-shadow: var(--shadow-project-3d);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  @media (hover: hover) {
+    .project-card-physical:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-project-3d-hover);
+    }
+  }
+  .project-card-physical:active {
+    transform: translate(1px, 1px);
+    box-shadow: var(--shadow-sm-3d);
+  }
+
+  .guide-box-physical {
+    box-shadow: var(--shadow-guide-3d);
+  }
+
+  .manifesto-box-physical {
+    box-shadow: var(--shadow-card-3d);
+  }
+
+  .status-tape-physical {
+    box-shadow: var(--shadow-tape-3d);
+  }
+
+  .btn-physical {
+    box-shadow: var(--shadow-btn-3d);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  @media (hover: hover) {
+    .btn-physical:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-btn-3d-hover);
+    }
+  }
+  .btn-physical:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px transparent;
+  }
+
+  .btn-sm-physical {
+    box-shadow: var(--shadow-sm-3d);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  @media (hover: hover) {
+    .btn-sm-physical:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow-sm-3d-hover);
+    }
+  }
+  .btn-sm-physical:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0px 0px 0px transparent;
   }
 
   /* Custom Scrollbar */
@@ -41,13 +265,13 @@
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #090a0f;
+    background: var(--bg-card-muted);
   }
   ::-webkit-scrollbar-thumb {
-    background: #1c2333;
+    background: var(--border-ink);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #2e3852;
+    background: var(--vermilion);
   }
 }

@@ -9,6 +9,7 @@ const members = defineCollection({
     role: z.string(),
     avatar: z.string(),
     bio: z.string().optional(),
+    quote: z.string().optional(),
     skills: z.array(z.string()).default([]),
     socials: z
       .object({
@@ -28,8 +29,8 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string(),
     status: z.enum(['live', 'in-development', 'planned']).default('in-development'),
-    subdomain: z.string(),
-    url: z.string().url().optional(),
+    slug: z.string().optional(),
+    url: z.string().optional(),
     techStack: z.array(z.string()).default([]),
     contributors: z.array(z.string()).default([]),
     category: z.string().default('Experiment'),

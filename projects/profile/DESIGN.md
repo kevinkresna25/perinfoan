@@ -1,27 +1,27 @@
 # Design System — Perinfoan Web Profile
 
-## Aesthetic World: Student Zine & Terminal Telemetry Hybrid
-Perinfoan menolak template kartu SaaS generik yang membosankan. Desain ini menggabungkan struktur grid modern yang bersih (*indie zine*) dengan indikator telemetri teknis khas terminal lab komputer (*phosphor cyan & emerald*), menjaga keseimbangan antara estetika profesional dan kehangatan lingkaran tongkrongan kampus.
+## Aesthetic World: Indie Studio Zine & Physical Collector Cards
+Perinfoan menolak tampilan template SaaS AI gelap yang dingin, neon berlebihan, dan telemetri palsu. Desain ini mengusung estetika **Indie Studio Zine & Trading Cards**: perpaduan hangat antara kertas cetak analog (*warm newsprint paper*), tipografi editorial yang berani (*bold sans + bookish italic serif*), kartu fisik dengan bayangan offset nyata (*hard offset drop shadows*), dan atmosfer persahabatan yang autentik.
 
 ## Color Palette
-- **Background Ground**: `#090a0f` (Deep obsidian slate)
-- **Surface Cards**: `#0c0f17` (Normal), `#0c101c` (Featured), `#090d15` (Dashed / Idea slot)
-- **Borders**: `#1c2333` (Subtle default), `#2e3852` (Hover/Focused), `#1e2e4a` (Accent borders)
+- **Paper Ground**: `#f7f4ec` (Kertas newsprint hangat, tidak menyilaukan dan bertekstur nyaman)
+- **Secondary Ground / Muted Plate**: `#ede8d8` (Plat aksen zine sekunder)
+- **Card Surface**: `#ffffff` (Kertas kartu putih bersih dengan batas tinta tegas)
+- **Ink Black**: `#181715` (Tinta karbon pekat untuk border, teks judul, dan drop shadow)
+- **Ink Muted / Body**: `#59554a` (Warna teks paragraf yang hangat dan terbaca jelas)
 - **Accents**:
-  - Phosphor Cyan: `#00f0ff` (Primary actions, key identifiers, selection)
-  - Emerald Live: `#10b981` (Online telemetry, live status badge)
-  - Amber In-Dev: `#f59e0b` (Work in progress / development state)
-- **Text & Contrast**:
-  - Primary: `#f3f4f6` (High contrast >= 14:1 against ground)
-  - Secondary: `#9ca3af` (Body text, contrast >= 5.5:1)
-  - Tertiary / Muted: `#6b7280` (Labels & captions)
+  - Editorial Vermilion: `#c93b1d` (Aksen utama untuk penekanan, stempel manifesto, dan tombol aksi primer)
+  - Highlight Gold: `#fef08a` (Highlight status mingguan tongkrongan)
+  - Status Live Emerald: `#10b981` (Indikator status live proyek dan layanan aktif)
 
 ## Typography
-- **Primary Interface & Headings**: `Schibsted Grotesk` (Sans-serif neo-grotesque yang tajam dan modern)
-- **Data, Telemetry, Badges & Code**: `JetBrains Mono` (Monospace dengan karakter teknis kuat)
+- **Headings & Display**: `Epilogue` (Sans-serif tebal berkarakter tegas dan modern)
+- **Editorial Emphases & Quotes**: `Newsreader` (Serif miring/italic yang hangat, bernuansa sastra/jurnal fisik)
+- **Technical Badges, Slots & Metadata**: `JetBrains Mono` (Monospace untuk penomoran slot, metadata commit, dan status)
 
 ## Key Components
-1. **Telemetry Status Pill**: Komponen header dan hero yang menampilkan status ingress Cloudflare dan kondisi sistem dengan animasi titik pulsa.
-2. **Asymmetric Bento Showcase**: Kartu proyek dengan status live ping, tag teknologi terisolasi, nama kontributor, dan tautan langsung ke subdomain.
-3. **Collaborative Member Cards**: Kartu profil yang menampilkan avatar, peran, keahlian, dan tautan profil sosial media anggota dengan penomoran `#01` s/d `#07`.
-4. **Git-First Onboarding Box**: Panduan 3 langkah visual bagi anggota untuk belajar berkontribusi melalui GitHub Pull Request.
+1. **Top Ticker Masthead**: Header edisi koran zine `"PERINFOAN CIRCLE // KOLEKTIF EKSPLORASI TEKNOLOGI // EST. 2026"` yang memberikan konteks identitas langsung di first viewport.
+2. **Weekly Status Banner**: Papan status santai minggu ini dengan bayangan offset fisik dan warna highlight tape kuning.
+3. **Collectible Cards**: Kartu pengenal fisik dengan foto profil, peran miring, kutipan langsung, tag keahlian, dan tautan GitHub.
+4. **Project Gallery Frame**: Etalase proyek dengan bingkai visual window aplikasi mandiri (seperti game UNO dan Web Profile) lengkap dengan informasi proyek.
+5. **Printed Manual Box**: Panduan kontribusi 3 langkah bagi anggota untuk memperbarui profil mereka via Git Pull Request.

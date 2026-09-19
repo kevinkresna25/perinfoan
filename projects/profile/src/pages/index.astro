@@ -10,242 +10,138 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout
-  title="Perinfoan — Portal Resmi & Direktori Proyek Mahasiswa"
-  description="Wadah eksplorasi, eksperimen perangkat lunak, dan proyek seru mahasiswa circle Perinfoan di bawah domain perinfoan.web.id."
+  title="Perinfoan — Bersama Berkarya, Aku Perinfoan, Bersiaplah."
+  description="Wadah berkumpul, bermain, dan bereksperimen perangkat lunak circle Perinfoan."
 >
   <main>
-    <!-- HERO SECTION -->
-    <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 border-b border-[#1c2333] overflow-hidden">
-      <!-- Subtle background grid -->
-      <div
-        class="absolute inset-0 pointer-events-none opacity-20"
-        style="background-image: radial-gradient(#2e3852 1px, transparent 1px); background-size: 24px 24px;"
-      >
-      </div>
-
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        <!-- Live Telemetry Pill (Challenger Donation) -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#1e2e42] bg-[#0c121e] text-xs font-['JetBrains_Mono',monospace] text-[#00f0ff] mb-6">
-          <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
-          <span>SYSTEM: NOMINAL // INGRESS: CLOUDFLARE ZERO TRUST // PERINFOAN.WEB.ID</span>
-        </div>
-
-        <div class="max-w-3xl">
-          <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.1] mb-6">
-            Eksplorasi kode, mabar, dan karya santai circle Perinfoan.
-          </h1>
-
-          <p class="text-lg sm:text-xl text-[#9ca3af] leading-relaxed mb-8">
-            Tempat berkumpul, berdiskusi, dan membangun proyek-proyek eksperimental mahasiswa. Dari game kasual hingga infrastruktur mandiri di VPS, semua proyek dideploy mandiri di subdomain masing-masing.
-          </p>
-
-          <div class="flex flex-wrap items-center gap-4">
-            <a
-              href="#showcase"
-              class="px-6 py-3 rounded-lg bg-[#00f0ff] text-[#090a0f] font-semibold text-sm hover:bg-[#38f4ff] transition-all focus:ring-2 focus:ring-[#00f0ff] focus:ring-offset-2 focus:ring-offset-[#090a0f]"
-            >
-              Lihat Proyek Subdomain
-            </a>
-            <a
-              href="#members"
-              class="px-6 py-3 rounded-lg border border-[#2e3852] bg-[#101422] text-white font-medium text-sm hover:border-[#00f0ff] hover:text-[#00f0ff] transition-all"
-            >
-              Kenalan dengan 7 Anggota
-            </a>
-          </div>
-        </div>
-
-        <!-- Telemetry Stats Strip -->
-        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 border border-[#1c2333] bg-[#0c0f17] rounded-xl p-4 sm:p-6 font-['JetBrains_Mono',monospace]">
-          <div class="flex flex-col">
-            <span class="text-xs text-[#6b7280]">ACTIVE SUBDOMAINS</span>
-            <span class="text-2xl font-bold text-white mt-1">2 Live/Dev</span>
-          </div>
-          <div class="flex flex-col border-l border-[#1c2333] pl-4">
-            <span class="text-xs text-[#6b7280]">CIRCLE MEMBERS</span>
-            <span class="text-2xl font-bold text-[#00f0ff] mt-1">7 Tetap</span>
-          </div>
-          <div class="flex flex-col border-l-0 md:border-l border-[#1c2333] md:pl-4 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0">
-            <span class="text-xs text-[#6b7280]">HOSTING & ROUTING</span>
-            <span class="text-2xl font-bold text-[#10b981] mt-1">VPS + Docker</span>
-          </div>
-          <div class="flex flex-col border-l border-[#1c2333] pl-4 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0">
-            <span class="text-xs text-[#6b7280]">CONTRIBUTION</span>
-            <span class="text-2xl font-bold text-white mt-1">Git PR</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SHOWCASE SECTION -->
-    <section id="showcase" class="py-20 border-b border-[#1c2333]">
+    <!-- HERO SECTION: ZINE EDITORIAL -->
+    <section class="border-b-2 border-[var(--border-ink)] bg-[var(--bg-paper)] pt-12 pb-16 md:pt-20 md:pb-24">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Etalase Proyek Subdomain
-            </h2>
-            <p class="text-[#9ca3af] mt-2 max-w-xl">
-              Setiap proyek berjalan di container Docker terisolasi dan dapat diakses publik melalui subdomain resmi <span class="text-[#00f0ff] font-['JetBrains_Mono',monospace]">*.perinfoan.web.id</span>.
-            </p>
-          </div>
-          <span class="text-xs font-['JetBrains_Mono',monospace] text-[#6b7280]">
-            SHOWCASE COUNT: {sortedProjects.length}
-          </span>
+
+        <!-- STATUS BAR -->
+        <div class="status-tape-physical mb-8 inline-flex flex-wrap items-center gap-3 px-4 py-2 rounded-lg border-2 border-[var(--gold-tape-border)] bg-[var(--gold-tape-bg)] text-xs font-['JetBrains_Mono',monospace]">
+          <span class="font-bold text-[var(--gold-tape-text)]">📌 STATUS MINGGU INI:</span>
+          <span class="text-[var(--gold-tape-text)] font-medium">Lagi ngulik proyek bareng, push rank santai, & oprek game UNO</span>
+          <span class="hidden sm:inline text-[var(--gold-tape-subtle)]">•</span>
+          <span class="hidden sm:inline font-bold text-[var(--gold-tape-text)]">SEMANGAT NGOPREK & MABAR</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {sortedProjects.map((project) => (
-            <article class="flex flex-col justify-between p-6 sm:p-8 rounded-xl border border-[#1c2333] bg-[#0c0f17] hover:border-[#2e3852] transition-all group">
-              <div>
-                <div class="flex items-center justify-between gap-4 mb-4 font-['JetBrains_Mono',monospace] text-xs">
-                  <span class="px-2.5 py-1 rounded bg-[#161c2e] text-[#00f0ff] border border-[#1e2e4a]">
-                    {project.data.category}
-                  </span>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <!-- Main Editorial Lead -->
+          <div class="lg:col-span-8">
+            <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[var(--ink-black)] tracking-tight leading-[1.04]">
+              Bersama Berkarya, <em class="font-['Newsreader',serif] font-normal italic text-[var(--vermilion)]">Aku Perinfoan</em>, Bersiaplah.
+            </h1>
 
-                  {project.data.status === 'live' && (
-                    <span class="inline-flex items-center gap-1.5 text-[#10b981]">
-                      <span class="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-ping"></span>
-                      LIVE AT {project.data.subdomain}
-                    </span>
-                  )}
-                  {project.data.status === 'in-development' && (
-                    <span class="inline-flex items-center gap-1.5 text-[#f59e0b]">
-                      <span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
-                      IN DEVELOPMENT
-                    </span>
-                  )}
-                </div>
+            <p class="mt-5 sm:mt-6 text-base sm:text-xl text-[var(--ink-muted)] font-medium leading-relaxed max-w-2xl">
+              Tempat berkumpul, berdiskusi, main game santai di waktu senggang, dan membangun beragam proyek mandiri. Dibangun dengan rasa penasaran, secawan kopi, dan canda tawa tongkrongan.
+            </p>
 
-                <h3 class="text-2xl font-bold text-white group-hover:text-[#00f0ff] transition-colors">
-                  {project.data.title}
-                </h3>
-
-                <p class="text-[#9ca3af] text-sm mt-3 leading-relaxed">
-                  {project.data.description}
-                </p>
-
-                <!-- Tech Stack Pills -->
-                <div class="flex flex-wrap gap-2 mt-6">
-                  {project.data.techStack.map((tech) => (
-                    <span class="px-2 py-0.5 rounded text-xs font-['JetBrains_Mono',monospace] bg-[#141824] text-[#9ca3af] border border-[#1e2333]">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div class="mt-8 pt-4 border-t border-[#161c2a] flex items-center justify-between">
-                <div class="text-xs text-[#6b7280]">
-                  Kontributor: <span class="text-[#f3f4f6]">{project.data.contributors.join(', ')}</span>
-                </div>
-
-                {project.data.url ? (
-                  <a
-                    href={project.data.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 text-sm font-semibold text-[#00f0ff] hover:underline"
-                  >
-                    <span>Kunjungi</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                ) : (
-                  <span class="text-xs font-['JetBrains_Mono',monospace] text-[#6b7280]">
-                    subdomain: {project.data.subdomain}
-                  </span>
-                )}
-              </div>
-            </article>
-          ))}
-
-          <!-- Idea Callout Card -->
-          <div class="p-6 sm:p-8 rounded-xl border border-dashed border-[#242e44] bg-[#090d15] flex flex-col justify-between">
-            <div>
-              <span class="px-2.5 py-1 rounded bg-[#161c2e] text-[#9ca3af] font-['JetBrains_Mono',monospace] text-xs border border-[#1e2333]">
-                Punya Ide Proyek?
-              </span>
-              <h3 class="text-2xl font-bold text-white mt-4">
-                Buat Proyek Iseng Berikutnya
-              </h3>
-              <p class="text-[#9ca3af] text-sm mt-2 leading-relaxed">
-                Punya ide game web, bot, alat utilitas, atau eksperimen machine learning? Ajukan folder baru di <code class="text-[#00f0ff] font-['JetBrains_Mono',monospace]">projects/&lt;nama-project&gt;</code> dan sambungkan ke subdomain baru!
-              </p>
-            </div>
-
-            <div class="mt-8 pt-4 border-t border-[#161c2a]">
+            <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
               <a
-                href="#about"
-                class="text-xs font-['JetBrains_Mono',monospace] text-[#00f0ff] hover:underline inline-flex items-center gap-1.5"
+                href="#members"
+                class="btn-physical px-6 py-3.5 rounded-lg border-2 border-[var(--border-ink)] bg-[var(--vermilion)] text-white font-bold text-sm tracking-wide text-center"
               >
-                <span>Pelajari Alur Kontribusi &rarr;</span>
+                Buka Profil Anggota &darr;
+              </a>
+              <a
+                href="#projects"
+                class="btn-physical px-6 py-3.5 rounded-lg border-2 border-[var(--border-ink)] bg-[var(--bg-card)] text-[var(--ink-black)] font-bold text-sm tracking-wide text-center"
+              >
+                Lihat Koleksi Proyek
               </a>
             </div>
           </div>
+
+          <!-- Stamped Manifesto Card -->
+          <div class="manifesto-box-physical lg:col-span-4 p-6 sm:p-7 rounded-xl border-2 border-dashed border-[var(--border-ink)] bg-[var(--bg-card-muted)] rotate-1 hover:rotate-0 transition-transform">
+            <span class="text-xs font-black font-['JetBrains_Mono',monospace] tracking-wider text-[var(--vermilion)] uppercase block">
+              // MANIFESTO CIRCLE
+            </span>
+            <blockquote class="mt-3 font-['Newsreader',serif] italic text-lg sm:text-xl text-[var(--ink-black)] leading-snug">
+              "Lebih baik mencoba bikin game seru walau banyak bug, daripada cuma jadi wacana di grup chat."
+            </blockquote>
+            <div class="mt-6 pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs font-['JetBrains_Mono',monospace] text-[var(--ink-muted)]">
+              <span>KOLEKTIF KAWAN</span>
+              <span>PROYEK MANDIRI</span>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
 
-    <!-- MEMBERS SECTION -->
-    <section id="members" class="py-20 border-b border-[#1c2333]">
+    <!-- MEMBERS SECTION: TRADING CARDS -->
+    <section id="members" class="border-b-2 border-[var(--border-ink)] bg-[var(--bg-card-muted)] py-16 sm:py-24">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b-2 border-[var(--border-ink)] pb-6">
           <div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              7 Anggota Perinfoan
+            <span class="text-xs font-black font-['JetBrains_Mono',monospace] tracking-widest text-[var(--vermilion)] uppercase">
+              ROSTER RESMI // 2026
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-black text-[var(--ink-black)] tracking-tight mt-1">
+              Profil Anggota Perinfoan
             </h2>
-            <p class="text-[#9ca3af] mt-2 max-w-xl">
-              Lingkaran pertemanan dan tim pengembang di balik proyek-proyek Perinfoan. Data dikelola langsung oleh masing-masing anggota via Git.
+            <p class="text-[var(--ink-muted)] mt-2 font-medium">
+              Kartu pengenal resmi dari setiap anggota Perinfoan. Data dikelola langsung oleh masing-masing anggota melalui Git.
             </p>
           </div>
-          <span class="text-xs font-['JetBrains_Mono',monospace] text-[#6b7280]">
-            TOTAL: 7 ANGGOTA TETAP
-          </span>
+          <div class="btn-sm-physical text-xs font-['JetBrains_Mono',monospace] font-bold text-[var(--ink-black)] bg-[var(--bg-paper)] px-3 py-1.5 rounded border-2 border-[var(--border-ink)] self-start md:self-end">
+            ROSTER AKTIF
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- TRADING CARDS GRID -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {sortedMembers.map((member) => (
-            <div
-              class={`p-6 rounded-xl border transition-all flex flex-col justify-between ${
-                member.data.order === 1
-                  ? 'border-[#2e3852] bg-[#0c101c] hover:border-[#00f0ff]'
-                  : 'border-[#1c2333] bg-[#0a0d14] hover:border-[#2e3852]'
-              }`}
-            >
+            <article class="card-physical flex flex-col justify-between rounded-xl border-2 border-[var(--border-card)] bg-[var(--bg-card)] p-5">
               <div>
-                <div class="flex items-start justify-between gap-4 mb-4">
-                  <img
-                    src={member.data.avatar}
-                    alt={member.data.name}
-                    class="w-14 h-14 rounded-lg object-cover border border-[#2e3852]"
-                    loading="lazy"
-                  />
+                <!-- Top Card Slot & Badge -->
+                <div class="flex items-center justify-between font-['JetBrains_Mono',monospace] text-xs border-b border-[var(--border-inner)] pb-3 mb-4">
+                  <span class="font-bold text-[var(--vermilion)]">
+                    #{String(member.data.order).padStart(2, '0')} // SLOT
+                  </span>
                   {member.data.nickname && (
-                    <span class="px-2 py-0.5 rounded text-xs font-['JetBrains_Mono',monospace] bg-[#141824] text-[#00f0ff] border border-[#1e2e4a]">
+                    <span class="px-2 py-0.5 rounded bg-[var(--bg-card-muted)] text-[var(--ink-black)] font-semibold text-[11px] border border-[var(--border-subtle)]">
                       @{member.data.nickname}
                     </span>
                   )}
                 </div>
 
-                <h3 class="text-xl font-bold text-white">
+                <!-- Avatar Image -->
+                <div class="relative overflow-hidden rounded-lg border-2 border-[var(--border-card)] bg-[var(--bg-card-muted)] mb-4 aspect-[4/3] sm:aspect-square">
+                  <img
+                    src={member.data.avatar}
+                    alt={member.data.name}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-[var(--badge-bg)] text-[var(--badge-text)] font-['JetBrains_Mono',monospace] text-[10px] font-bold shadow-[2px_2px_0px_var(--shadow-color)]">
+                    AKU PERINFOAN
+                  </div>
+                </div>
+
+                <!-- Name & Role -->
+                <h3 class="text-xl font-black text-[var(--ink-black)] leading-tight">
                   {member.data.name}
                 </h3>
-                <p class="text-sm font-medium text-[#00f0ff] mt-0.5">
+                <p class="font-['Newsreader',serif] italic text-sm text-[var(--ink-muted)] font-semibold mt-1">
                   {member.data.role}
                 </p>
 
-                {member.data.bio && (
-                  <p class="text-sm text-[#9ca3af] mt-3 leading-relaxed">
-                    {member.data.bio}
-                  </p>
+                <!-- Quote Box -->
+                {member.data.quote && (
+                  <div class="mt-3 p-3 rounded-lg bg-[var(--bg-card-inner)] text-xs text-[var(--ink-black)] font-medium leading-relaxed font-['Newsreader',serif] italic border border-[var(--border-subtle)]">
+                    "{member.data.quote}"
+                  </div>
                 )}
 
+                <!-- Skills / Tech Tags -->
                 {member.data.skills.length > 0 && (
-                  <div class="flex flex-wrap gap-1.5 mt-4">
+                  <div class="flex flex-wrap gap-1 mt-4">
                     {member.data.skills.map((skill) => (
-                      <span class="px-2 py-0.5 rounded text-[11px] font-['JetBrains_Mono',monospace] bg-[#101422] text-[#9ca3af] border border-[#1a2030]">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold font-['JetBrains_Mono',monospace] bg-[var(--bg-card-muted)] text-[var(--ink-muted)] border border-[var(--border-subtle)]">
                         {skill}
                       </span>
                     ))}
@@ -253,18 +149,17 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
                 )}
               </div>
 
-              <!-- Social links & order -->
-              <div class="mt-6 pt-4 border-t border-[#161c2a] flex items-center justify-between text-xs font-['JetBrains_Mono',monospace]">
+              <!-- Card Bottom: Socials -->
+              <div class="mt-6 pt-3 border-t border-[var(--border-inner)] flex items-center justify-between text-xs font-['JetBrains_Mono',monospace]">
                 <div class="flex items-center gap-3">
                   {member.data.socials.github && (
                     <a
                       href={member.data.socials.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-[#9ca3af] hover:text-[#00f0ff] transition-colors"
-                      aria-label={`${member.data.name} GitHub`}
+                      class="text-[var(--ink-black)] font-bold hover:text-[var(--vermilion)] transition-colors"
                     >
-                      GitHub
+                      GitHub &rarr;
                     </a>
                   )}
                   {member.data.socials.linkedin && (
@@ -272,92 +167,250 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
                       href={member.data.socials.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-[#9ca3af] hover:text-[#00f0ff] transition-colors"
-                      aria-label={`${member.data.name} LinkedIn`}
+                      class="text-[var(--ink-muted)] font-bold hover:text-[var(--vermilion)] transition-colors"
                     >
                       LinkedIn
                     </a>
                   )}
                 </div>
-
-                <span class="text-[#4b5563]">#{String(member.data.order).padStart(2, '0')}</span>
+                <span class="text-[var(--ink-subtle)] text-[10px]">VERIFIED</span>
               </div>
-            </div>
+            </article>
           ))}
         </div>
+
       </div>
     </section>
 
-    <!-- ABOUT & CONTRIBUTION SECTION -->
-    <section id="about" class="py-20">
+    <!-- PROJECTS SECTION: GALLERY FRAME -->
+    <section id="projects" class="border-b-2 border-[var(--border-ink)] bg-[var(--bg-paper)] py-16 sm:py-24">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b-2 border-[var(--border-ink)] pb-6">
           <div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Tentang Lingkaran Perinfoan
+            <span class="text-xs font-black font-['JetBrains_Mono',monospace] tracking-widest text-[var(--vermilion)] uppercase">
+              ETALASE PROYEK & KARYA
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-black text-[var(--ink-black)] tracking-tight mt-1">
+              Koleksi Proyek & Eksperimen
             </h2>
-            <div class="mt-6 space-y-4 text-[#9ca3af] leading-relaxed text-sm sm:text-base">
+            <p class="text-[var(--ink-muted)] mt-2 font-medium">
+              Kumpulan karya dan eksperimen digital yang dirancang untuk dinikmati bersama.
+            </p>
+          </div>
+          <div class="text-xs font-['JetBrains_Mono',monospace] font-bold text-[var(--ink-muted)]">
+            SHOWCASE COUNT: {sortedProjects.length}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {sortedProjects.map((project) => (
+            <article class="project-card-physical flex flex-col justify-between rounded-xl border-2 border-[var(--border-card)] bg-[var(--bg-card)] p-6 sm:p-8">
+              <div>
+                <!-- Category & Status Badge -->
+                <div class="flex items-center justify-between gap-3 mb-4 font-['JetBrains_Mono',monospace] text-xs">
+                  <span class="px-2.5 py-1 rounded bg-[var(--badge-bg)] text-[var(--badge-text)] font-bold shadow-[1px_1px_0px_var(--shadow-color)]">
+                    {project.data.category}
+                  </span>
+
+                  {project.data.status === 'live' && (
+                    <span class="inline-flex items-center gap-1.5 font-bold text-[#10b981]">
+                      <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+                      STATUS: LIVE
+                    </span>
+                  )}
+                  {project.data.status === 'in-development' && (
+                    <span class="inline-flex items-center gap-1.5 font-bold text-[var(--vermilion)]">
+                      <span class="w-2 h-2 rounded-full bg-[var(--vermilion)]"></span>
+                      IN DEVELOPMENT
+                    </span>
+                  )}
+                </div>
+
+                <h3 class="text-2xl sm:text-3xl font-black text-[var(--ink-black)] leading-tight">
+                  {project.data.title}
+                </h3>
+
+                <p class="text-[var(--ink-muted)] text-sm mt-3 leading-relaxed font-medium">
+                  {project.data.description}
+                </p>
+
+                <!-- Project Preview Window Frame -->
+                <div class="mt-6 rounded-lg border-2 border-[var(--border-card)] bg-[var(--bg-window)] p-4 text-white">
+                  <div class="flex items-center justify-between pb-3 border-b border-[#333] text-xs font-['JetBrains_Mono',monospace] text-[#aaa]">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+                      <span class="ml-2 text-white font-bold">{project.data.title}</span>
+                    </div>
+                    <span class="text-[10px] text-[#888]">LIVE APPLICATION</span>
+                  </div>
+
+                  <div class="py-6 text-center">
+                    {project.data.category.toLowerCase().includes('game') ? (
+                      <div>
+                        <div class="text-4xl mb-2">🃏 🎮 🔴 🔵</div>
+                        <p class="text-xs font-['JetBrains_Mono',monospace] text-[#ded8c4]">
+                          Lobby: #RUANG-SANTUY • Realtime WebSocket
+                        </p>
+                      </div>
+                    ) : (
+                      <div>
+                        <div class="text-4xl mb-2">🏛️ 📰 ✦ ⚡</div>
+                        <p class="text-xs font-['JetBrains_Mono',monospace] text-[#ded8c4]">
+                          Astro • Modern Editorial Platform
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <!-- Tech Stack Tags -->
+                <div class="flex flex-wrap gap-2 mt-5">
+                  {project.data.techStack.map((tech) => (
+                    <span class="px-2.5 py-1 rounded text-xs font-bold font-['JetBrains_Mono',monospace] bg-[var(--bg-card-muted)] text-[var(--ink-black)] border border-[var(--border-subtle)]">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Footer info -->
+              <div class="mt-8 pt-4 border-t border-[var(--border-inner)] flex items-center justify-between text-xs font-['JetBrains_Mono',monospace]">
+                <span class="text-[var(--ink-muted)]">
+                  Karya: <strong class="text-[var(--ink-black)]">{project.data.contributors.join(', ')}</strong>
+                </span>
+
+                {project.data.url ? (
+                  <a
+                    href={project.data.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-bold text-[var(--vermilion)] hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>Kunjungi Proyek</span>
+                    <span>&rarr;</span>
+                  </a>
+                ) : (
+                  <span class="font-bold text-[var(--vermilion)]">
+                    Segera Hadir
+                  </span>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <!-- NEW PROJECT IDEA BOX -->
+        <div class="mt-10 p-6 sm:p-8 rounded-xl border-2 border-dashed border-[var(--border-ink)] bg-[var(--bg-card-muted)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div>
+            <span class="px-2 py-0.5 rounded bg-[var(--badge-bg)] text-[var(--badge-text)] font-['JetBrains_Mono',monospace] text-xs font-bold">
+              IDE BARU
+            </span>
+            <h3 class="text-xl sm:text-2xl font-black text-[var(--ink-black)] mt-2">
+              Punya ide game atau utilitas baru untuk dibuat?
+            </h3>
+            <p class="text-sm text-[var(--ink-muted)] mt-1 font-medium max-w-xl">
+              Setiap anggota berhak membuat folder baru di <code class="font-['JetBrains_Mono',monospace] font-bold text-[var(--ink-black)]">projects/&lt;nama-project&gt;</code> dan men-deploy karya baru secara mandiri.
+            </p>
+          </div>
+
+          <a
+            href="#about"
+            class="btn-physical px-5 py-3 rounded-lg border-2 border-[var(--border-ink)] bg-[var(--bg-card)] text-[var(--ink-black)] font-bold text-xs font-['JetBrains_Mono',monospace] whitespace-nowrap"
+          >
+            Pelajari Alur Git &rarr;
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MANIFESTO & GIT GUIDE SECTION -->
+    <section id="about" class="bg-[var(--bg-card-muted)] py-16 sm:py-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+          <!-- Story / Colophon Column -->
+          <div class="lg:col-span-6">
+            <span class="text-xs font-black font-['JetBrains_Mono',monospace] tracking-widest text-[var(--vermilion)] uppercase">
+              TENTANG PERINFOAN
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-black text-[var(--ink-black)] tracking-tight mt-1">
+              Dari Obrolan Santai Menjadi Rumah Digital
+            </h2>
+
+            <div class="mt-6 space-y-4 text-[var(--ink-muted)] font-medium leading-relaxed text-sm sm:text-base">
               <p>
-                Perinfoan berawal dari grup diskusi dan tempat nongkrong santai semasa kuliah. Di sela-sela waktu kuliah dan tugas, kami sering berdiskusi tentang teknologi, bermain game bersama, dan bermimpi membuat berbagai aplikasi yang bermanfaat sekaligus menyenangkan.
+                Perinfoan berawal dari grup obrolan santai. Di sela-sela rutinitas harian, anggota sering berdiskusi tentang hal-hal baru di dunia teknologi, bermain game bersama, dan merealisasikan berbagai ide aplikasi yang seru.
               </p>
               <p>
-                Dengan hadirnya domain <span class="text-white font-semibold">perinfoan.web.id</span>, kami menjadikannya rumah digital resmi untuk seluruh anggota. Siapa pun anggota grup berhak membuat sub-proyek, bereksperimen dengan bahasa pemrograman baru, dan men-deploy karyanya di sini.
+                Platform ini menjadi wadah bersama untuk berekspresi. Setiap anggota berhak membuat eksperimen, mencoba teknologi baru, dan men-deploy hasil karya secara terisolasi.
               </p>
-              <p>
-                Arsitektur kami dirancang sederhana namun tangguh: setiap proyek memiliki foldernya sendiri, di-dockerisasi secara terisolasi, dan dirutekan secara aman menggunakan Cloudflare Zero Trust Tunnel ke VPS pribadi tanpa mengorbankan keamanan.
+              <p class="font-['Newsreader',serif] italic text-base text-[var(--ink-black)]">
+                "Kami percaya bahwa cara terbaik untuk belajar adalah dengan membangun hal-hal nyata bersama kawan terdekat."
               </p>
             </div>
           </div>
 
-          <!-- Git Contribution Guide Box -->
-          <div class="p-6 sm:p-8 rounded-xl border border-[#1e2e4a] bg-[#0c121e]">
-            <h3 class="text-xl font-bold text-white flex items-center gap-2">
-              <span class="text-[#00f0ff] font-['JetBrains_Mono',monospace]">&gt;</span>
-              Cara Perbarui Data Anggota
-            </h3>
-            <p class="text-sm text-[#9ca3af] mt-2 mb-6">
-              Web ini menggunakan sistem static data. Anggota grup dapat memperbarui profil masing-masing melalui GitHub Pull Request:
+          <!-- Git Contribution Manual Box -->
+          <div class="guide-box-physical lg:col-span-6 p-6 sm:p-8 rounded-xl border-2 border-[var(--border-ink)] bg-[var(--bg-card)]">
+            <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4 mb-6">
+              <h3 class="text-lg sm:text-xl font-black text-[var(--ink-black)] tracking-tight">
+                Panduan Memperbarui Kartu Profil
+              </h3>
+              <span class="text-xs font-['JetBrains_Mono',monospace] font-bold text-[var(--vermilion)]">
+                KARTU PROFIL
+              </span>
+            </div>
+
+            <p class="text-xs text-[var(--ink-muted)] font-medium mb-6">
+              Web ini menggunakan data statis. Setiap anggota di lingkaran Perinfoan dapat memperbarui kartu profil masing-masing melalui GitHub Pull Request:
             </p>
 
-            <ol class="space-y-4 text-sm font-['JetBrains_Mono',monospace]">
+            <ol class="space-y-4 text-xs font-['JetBrains_Mono',monospace]">
               <li class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-[#162032] border border-[#2e3852] text-[#00f0ff] flex items-center justify-center text-xs shrink-0 mt-0.5">
+                <span class="w-6 h-6 rounded-md bg-[var(--vermilion)] text-white font-bold flex items-center justify-center shrink-0 mt-0.5 text-xs shadow-[1px_1px_0px_var(--shadow-color)]">
                   1
                 </span>
                 <div>
-                  <span class="text-white font-semibold">Fork / Clone Repositori</span>
-                  <p class="text-xs text-[#6b7280] mt-0.5 font-['Schibsted_Grotesk',sans-serif]">
-                    Clone repo ke laptop Anda dan buat branch baru untuk perubahan profil.
+                  <span class="font-bold text-[var(--ink-black)] text-sm">Clone & Buat Branch</span>
+                  <p class="text-[var(--ink-muted)] font-['Epilogue',sans-serif] mt-0.5 text-xs">
+                    Clone repositori ke perangkat lokal dan buat branch baru: <code class="px-1.5 py-0.5 rounded bg-[var(--bg-card-inner)] border border-[var(--border-subtle)] text-[var(--vermilion)] font-bold">git checkout -b profile/nama-anggota</code>.
                   </p>
                 </div>
               </li>
 
               <li class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-[#162032] border border-[#2e3852] text-[#00f0ff] flex items-center justify-center text-xs shrink-0 mt-0.5">
+                <span class="w-6 h-6 rounded-md bg-[var(--vermilion)] text-white font-bold flex items-center justify-center shrink-0 mt-0.5 text-xs shadow-[1px_1px_0px_var(--shadow-color)]">
                   2
                 </span>
                 <div>
-                  <span class="text-white font-semibold">Edit File Profil Anda</span>
-                  <p class="text-xs text-[#6b7280] mt-0.5 font-['Schibsted_Grotesk',sans-serif]">
-                    Buka <code class="text-[#00f0ff]">projects/profile/src/content/members/</code>, perbarui data pada file slot profil Anda.
+                  <span class="font-bold text-[var(--ink-black)] text-sm">Edit File Profil</span>
+                  <p class="text-[var(--ink-muted)] font-['Epilogue',sans-serif] mt-0.5 text-xs">
+                    Buka <code class="px-1.5 py-0.5 rounded bg-[var(--bg-card-inner)] border border-[var(--border-subtle)] text-[var(--vermilion)] font-bold">projects/profile/src/content/members/</code>, perbarui nama, kutipan, dan keahlian pada file slot yang dipilih.
                   </p>
                 </div>
               </li>
 
               <li class="flex items-start gap-3">
-                <span class="w-6 h-6 rounded bg-[#162032] border border-[#2e3852] text-[#00f0ff] flex items-center justify-center text-xs shrink-0 mt-0.5">
+                <span class="w-6 h-6 rounded-md bg-[var(--vermilion)] text-white font-bold flex items-center justify-center shrink-0 mt-0.5 text-xs shadow-[1px_1px_0px_var(--shadow-color)]">
                   3
                 </span>
                 <div>
-                  <span class="text-white font-semibold">Kirim Pull Request</span>
-                  <p class="text-xs text-[#6b7280] mt-0.5 font-['Schibsted_Grotesk',sans-serif]">
-                    Push branch Anda ke GitHub dan buka Pull Request ke branch utama. Profil akan otomatis terupdate setelah di-merge!
+                  <span class="font-bold text-[var(--ink-black)] text-sm">Kirim Pull Request</span>
+                  <p class="text-[var(--ink-muted)] font-['Epilogue',sans-serif] mt-0.5 text-xs">
+                    Push branch ke repositori dan <a href="https://github.com/kevinkresna25/perinfoan/pulls" target="_blank" rel="noopener noreferrer" class="text-[var(--vermilion)] font-bold underline hover:no-underline">buka Pull Request di GitHub &rarr;</a>. Setelah disetujui dan digabungkan, profil akan otomatis terpasang di halaman utama.
                   </p>
                 </div>
               </li>
             </ol>
           </div>
+
         </div>
+
       </div>
     </section>
   </main>
