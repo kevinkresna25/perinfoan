@@ -1,0 +1,13 @@
+services:
+  web-profile:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: perinfoan-profile
+    restart: unless-stopped
+    networks:
+      - perinfoan-net
+
+networks:
+  perinfoan-net:
+    external: true
