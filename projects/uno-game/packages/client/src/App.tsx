@@ -192,7 +192,7 @@ export function App() {
           </div>
 
           <UnoButton
-            canCall={myHand.length <= 2}
+            canCall={myHand.length === 1 || (myHand.length === 2 && isMyTurn)}
             hasCalled={myPlayer?.hasCalledUno || false}
             onCallUno={callUno}
           />

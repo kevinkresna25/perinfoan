@@ -187,7 +187,10 @@ export class GameRoom {
     const player = this.state.players.find(p => p.id === playerId);
     if (!player) return false;
 
-    if (player.hand.length <= 2) {
+    const isMyTurn = this.state.players[this.state.activePlayerIndex]?.id === playerId;
+    const canCall = player.hand.length === 1 || (player.hand.length === 2 && isMyTurn);
+
+    if (canCall) {
       player.hasCalledUno = true;
       if (this.onMessage) {
         this.onMessage(`🔥 ${player.name} called UNO!`, 'alert');

@@ -45,4 +45,31 @@ describe('Room Manager & Game Room Lifecycle', () => {
     expect(reconnected.socketId).toBe('s2-new');
     expect(room.players).toHaveLength(2); // didn't add duplicate player
   });
+
+  it('allows calling UNO with 2 cards only on active turn, or with 1 card at any time', () => {
+    const room = manager.createRoom('HostPlayer', 30, 'host-id', 's1');
+    room.addPlayer('Player2', 'p2-id', 's2');
+    room.start();
+
+    // Turn is activePlayerIndex = 0 (host-id)
+    room.state.activePlayerIndex = 0;
+    room.state.players[0].hand = [
+      { id: 'red-1', color: 'red', type: 'number', value: 1 },
+      { id: 'blue-2', color: 'blue', type: 'number', value: 2 },
+    ];
+    room.state.players[1].hand = [
+      { id: 'red-3', color: 'red', type: 'number', value: 3 },
+      { id: 'blue-4', color: 'blue', type: 'number', value: 4 },
+    ];
+
+    // Host has 2 cards and it IS their turn -> can call UNO
+    expect(room.callUno('host-id')).toBe(true);
+
+    // Player 2 has 2 cards but it is NOT their turn -> CANNOT call UNO
+    expect(room.callUno('p2-id')).toBe(false);
+
+    // If Player 2 is down to 1 card, they CAN call UNO even when not their turn
+    room.state.players[1].hand = [{ id: 'red-3', color: 'red', type: 'number', value: 3 }];
+    expect(room.callUno('p2-id')).toBe(true);
+  });
 });
