@@ -9,7 +9,11 @@ export function createUploadRouter(roomManager: RoomManager): Router {
 
   const storage = multer.diskStorage({
     destination: (req, _file, cb) => {
-      const roomId = req.params.roomId;
+      const rawRoomId = req.params.roomId;
+      const roomId = Array.isArray(rawRoomId) ? rawRoomId[0] : rawRoomId;
+      if (!roomId) {
+        return cb(new Error('Room ID is required'), '');
+      }
       const uploadDir = path.resolve(process.cwd(), 'uploads', roomId);
       fs.mkdirSync(uploadDir, { recursive: true });
       cb(null, uploadDir);
@@ -34,8 +38,12 @@ export function createUploadRouter(roomManager: RoomManager): Router {
     }
   });
 
-  router.post('/rooms/:roomId/custom-images', upload.single('image'), (req, res) => {
-    const { roomId } = req.params;
+  router.post('/rooms/:roomId/custom-images', upload.single('image') as any, (req, res) => {
+    const rawRoomId = req.params.roomId;
+    const roomId = Array.isArray(rawRoomId) ? rawRoomId[0] : rawRoomId;
+    if (!roomId) {
+      return res.status(400).json({ success: false, error: 'Room ID is required' });
+    }
     const { slot } = req.body;
 
     const room = roomManager.getRoom(roomId);
