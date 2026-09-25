@@ -35,7 +35,7 @@ perinfoan/
 | Proyek | Kategori | Tech Stack | Status | Dokumentasi |
 |---|---|---|---|---|
 | **Web Profile** | Portal Utama | Astro, Tailwind CSS, Docker | 🟢 Live | [Baca README Proyek](projects/profile/README.md) |
-| **UNO Game** | Multiplayer Game | Node.js, WebSockets, Canvas | 🟡 In Development | *(Segera hadir)* |
+| **UNO Game** | Multiplayer Game | React, Node.js, Socket.io, Tailwind | 🟢 Ready | [Baca README Proyek](projects/uno-game/README.md) |
 
 Setiap proyek memiliki folder terpisah di `projects/<nama-proyek>/` yang dilengkapi dengan `README.md`, `Dockerfile`, dan `docker-compose.yml` sendiri tanpa saling mengganggu proyek lain.
 
