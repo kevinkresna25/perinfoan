@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: gacha-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: gacha_db
+      MYSQL_USER: gacha_user
+      MYSQL_PASSWORD: gacha_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - gacha_mysql_data:/var/lib/mysql
+      - ./packages/server/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "gacha_user", "-pgacha_pass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gacha-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: gacha_user
+      DB_PASSWORD: gacha_pass
+      DB_NAME: gacha_db
+      ADMIN_PASSWORD: adminsecret
+      STORAGE_DIR: /app/storage/uploads/cards
+    volumes:
+      - gacha_card_uploads:/app/storage/uploads/cards
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  gacha_mysql_data:
+  gacha_card_uploads:
