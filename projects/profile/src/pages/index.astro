@@ -130,16 +130,25 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
                   {member.data.role}
                 </p>
 
+                <!-- Bio Text -->
+                {(member.data.bio || member.body?.trim()) && (
+                  <p class="text-xs text-[var(--ink-muted)] leading-relaxed mt-2.5 font-medium">
+                    {member.data.bio || member.body?.trim()}
+                  </p>
+                )}
+
                 <!-- Quote Box -->
                 {member.data.quote && (
-                  <div class="mt-3 p-3 rounded-lg bg-[var(--bg-card-inner)] text-xs text-[var(--ink-black)] font-medium leading-relaxed font-['Newsreader',serif] italic border border-[var(--border-subtle)]">
-                    "{member.data.quote}"
+                  <div class="mt-3 p-2.5 rounded-lg bg-[var(--bg-card-inner)] text-xs text-[var(--ink-black)] font-medium leading-relaxed font-['Newsreader',serif] italic border border-[var(--border-subtle)] flex items-start gap-1.5">
+                    <span class="text-[var(--vermilion)] font-serif text-sm font-bold leading-none select-none">“</span>
+                    <span class="flex-1">{member.data.quote}</span>
+                    <span class="text-[var(--vermilion)] font-serif text-sm font-bold leading-none select-none">”</span>
                   </div>
                 )}
 
                 <!-- Skills / Tech Tags -->
                 {member.data.skills.length > 0 && (
-                  <div class="flex flex-wrap gap-1 mt-4">
+                  <div class="flex flex-wrap gap-1 mt-3.5">
                     {member.data.skills.map((skill) => (
                       <span class="px-2 py-0.5 rounded text-[10px] font-bold font-['JetBrains_Mono',monospace] bg-[var(--bg-card-muted)] text-[var(--ink-muted)] border border-[var(--border-subtle)]">
                         {skill}
@@ -150,30 +159,57 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
               </div>
 
               <!-- Card Bottom: Socials -->
-              <div class="mt-6 pt-3 border-t border-[var(--border-inner)] flex items-center justify-between text-xs font-['JetBrains_Mono',monospace]">
-                <div class="flex items-center gap-3">
-                  {member.data.socials.github && (
+              <div class="mt-6 pt-3 border-t border-[var(--border-inner)] flex flex-wrap items-center justify-between gap-2 text-xs font-['JetBrains_Mono',monospace]">
+                <div class="flex flex-wrap items-center gap-2.5">
+                  {member.data.socials?.github && (
                     <a
                       href={member.data.socials.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-[var(--ink-black)] font-bold hover:text-[var(--vermilion)] transition-colors"
+                      class="text-[var(--ink-black)] font-bold hover:text-[var(--vermilion)] transition-colors inline-flex items-center gap-0.5"
                     >
-                      GitHub &rarr;
+                      <span>GitHub</span>
+                      <span aria-hidden="true">&rarr;</span>
                     </a>
                   )}
-                  {member.data.socials.linkedin && (
+                  {member.data.socials?.linkedin && (
                     <a
                       href={member.data.socials.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-[var(--ink-muted)] font-bold hover:text-[var(--vermilion)] transition-colors"
+                      class="text-[var(--ink-muted)] font-bold hover:text-[var(--vermilion)] transition-colors inline-flex items-center gap-0.5"
                     >
-                      LinkedIn
+                      <span>LinkedIn</span>
+                      <span aria-hidden="true">&rarr;</span>
                     </a>
                   )}
+                  {member.data.socials?.instagram && (
+                    <a
+                      href={member.data.socials.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[var(--ink-muted)] font-bold hover:text-[var(--vermilion)] transition-colors inline-flex items-center gap-0.5"
+                    >
+                      <span>Instagram</span>
+                      <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  )}
+                  {member.data.socials?.website && (
+                    <a
+                      href={member.data.socials.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[var(--ink-muted)] font-bold hover:text-[var(--vermilion)] transition-colors inline-flex items-center gap-0.5"
+                    >
+                      <span>Web</span>
+                      <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  )}
+                  {!member.data.socials?.github && !member.data.socials?.linkedin && !member.data.socials?.instagram && !member.data.socials?.website && (
+                    <span class="text-[var(--ink-subtle)] text-[10px]">VERIFIED MEMBER</span>
+                  )}
                 </div>
-                <span class="text-[var(--ink-subtle)] text-[10px]">VERIFIED</span>
+                <span class="text-[var(--ink-subtle)] text-[10px] uppercase tracking-wider font-bold">VERIFIED</span>
               </div>
             </article>
           ))}
