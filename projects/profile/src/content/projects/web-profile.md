@@ -10,7 +10,7 @@ techStack:
   - "TypeScript"
   - "Content Collections"
 contributors:
-  - "Kresna"
+  - "Perinfoan Team"
 category: "Core Portal"
 order: 1
 ---
