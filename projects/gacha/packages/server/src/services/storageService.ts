@@ -15,13 +15,33 @@ export function ensureStorageDir(): void {
 // Ensure storage directory exists at module initialization
 ensureStorageDir();
 
+export const MIME_EXTENSION_MAP: Record<string, string> = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png',
+  'image/webp': '.webp',
+  'image/gif': '.gif',
+};
+
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
+
+export function getSafeExtension(mimetype: string, originalname: string): string {
+  if (MIME_EXTENSION_MAP[mimetype]) {
+    return MIME_EXTENSION_MAP[mimetype];
+  }
+  const ext = path.extname(originalname).toLowerCase();
+  if (ALLOWED_EXTENSIONS.has(ext)) {
+    return ext;
+  }
+  return '.png';
+}
+
 export const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
     ensureStorageDir();
     cb(null, config.storageDir);
   },
   filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
+    const ext = getSafeExtension(file.mimetype, file.originalname);
     cb(null, `${uuidv4()}${ext}`);
   },
 });
@@ -50,7 +70,13 @@ export const upload = multer({
 export const uploadMiddleware: RequestHandler = upload.single('image');
 
 export async function deleteCardImage(filename: string): Promise<boolean> {
+  if (!filename || typeof filename !== 'string') {
+    return false;
+  }
   const sanitizedFilename = path.basename(filename);
+  if (!sanitizedFilename || sanitizedFilename === '.' || sanitizedFilename === '..') {
+    return false;
+  }
   const filePath = path.join(config.storageDir, sanitizedFilename);
   try {
     await fs.unlink(filePath);
