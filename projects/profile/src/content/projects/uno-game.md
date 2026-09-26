@@ -1,13 +1,15 @@
 ---
 title: "UNO Multiplayer Web Game"
 description: "Eksperimen game kartu klasik UNO berbasis web untuk mabar santai sesama kawan dengan sinkronisasi giliran realtime."
-status: "in-development"
+status: "live"
 slug: "uno"
+url: "https://uno.perinfoan.web.id"
 techStack:
   - "Node.js"
-  - "WebSockets"
-  - "Canvas / React"
-  - "HTML5"
+  - "Socket.io"
+  - "React 18"
+  - "TypeScript"
+  - "Tailwind CSS"
 contributors:
   - "Perinfoan Team"
 category: "Multiplayer Game"
