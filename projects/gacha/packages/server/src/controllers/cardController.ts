@@ -4,38 +4,42 @@ import { getPool } from '../db/pool.js';
 import { deleteCardImage } from '../services/storageService.js';
 
 export async function listCards(req: Request, res: Response): Promise<void> {
-  const { rarity_id } = req.query;
-  const pool = getPool();
+  try {
+    const { rarity_id } = req.query;
+    const pool = getPool();
 
-  let query = `
-    SELECT c.*, r.name as rarity_name, r.color as rarity_color, r.sort_order as rarity_sort
-    FROM cards c
-    JOIN rarities r ON c.rarity_id = r.id
-  `;
-  const params: any[] = [];
+    let query = `
+      SELECT c.*, r.name as rarity_name, r.color as rarity_color, r.sort_order as rarity_sort
+      FROM cards c
+      JOIN rarities r ON c.rarity_id = r.id
+    `;
+    const params: any[] = [];
 
-  if (rarity_id) {
-    query += ' WHERE c.rarity_id = ?';
-    params.push(rarity_id);
+    if (rarity_id) {
+      query += ' WHERE c.rarity_id = ?';
+      params.push(rarity_id);
+    }
+
+    query += ' ORDER BY r.sort_order DESC, c.created_at DESC';
+
+    const [cards] = await pool.query<any[]>(query, params);
+    res.json({
+      cards: cards.map((c) => ({
+        id: c.id,
+        name: c.name,
+        rarity: {
+          id: c.rarity_id,
+          name: c.rarity_name,
+          color: c.rarity_color,
+        },
+        image_url: `/uploads/cards/${c.image_path}`,
+        description: c.description,
+        created_at: c.created_at,
+      })),
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Failed to list cards.' });
   }
-
-  query += ' ORDER BY r.sort_order DESC, c.created_at DESC';
-
-  const [cards] = await pool.query<any[]>(query, params);
-  res.json({
-    cards: cards.map((c) => ({
-      id: c.id,
-      name: c.name,
-      rarity: {
-        id: c.rarity_id,
-        name: c.rarity_name,
-        color: c.rarity_color,
-      },
-      image_url: `/uploads/cards/${c.image_path}`,
-      description: c.description,
-      created_at: c.created_at,
-    })),
-  });
 }
 
 export async function createCard(req: Request, res: Response): Promise<void> {
@@ -44,8 +48,11 @@ export async function createCard(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  const { name, rarity_id, description } = req.body;
+  const { name, rarity_id, description } = req.body ?? {};
   if (!name || !rarity_id) {
+    if (req.file) {
+      await deleteCardImage(req.file.filename);
+    }
     res.status(400).json({ error: 'Name and rarity_id are required.' });
     return;
   }

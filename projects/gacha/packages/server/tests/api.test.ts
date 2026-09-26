@@ -41,6 +41,12 @@ describe('API Integration Endpoints', () => {
       expect(res.body.error).toContain('Unauthorized');
     });
 
+    it('rejects GET /api/admin/rarities without auth token', async () => {
+      const res = await request(app).get('/api/admin/rarities');
+      expect(res.status).toBe(401);
+      expect(res.body.error).toContain('Unauthorized');
+    });
+
     it('rejects admin routes with malformed auth header', async () => {
       const res = await request(app)
         .post('/api/admin/rarities')
@@ -85,6 +91,14 @@ describe('API Integration Endpoints', () => {
       expect(res.body.expiresIn).toBe('24h');
       const decoded = jwt.verify(res.body.token, config.jwtSecret) as any;
       expect(decoded.role).toBe('admin');
+    });
+
+    it('handles admin login with missing body safely', async () => {
+      const res = await request(app)
+        .post('/api/admin/login')
+        .send();
+      expect(res.status).toBe(401);
+      expect(res.body.error).toContain('Invalid admin password');
     });
   });
 
@@ -283,7 +297,8 @@ describe('API Integration Endpoints', () => {
       expect(res.body.error).toContain('Image file is required');
     });
 
-    it('rejects card creation without name or rarity_id', async () => {
+    it('rejects card creation without name or rarity_id and cleans up uploaded file', async () => {
+      const deleteImageSpy = vi.spyOn(storageService, 'deleteCardImage').mockResolvedValue(true);
       const res = await request(app)
         .post('/api/admin/cards')
         .set('Authorization', `Bearer ${adminToken}`)
@@ -293,6 +308,7 @@ describe('API Integration Endpoints', () => {
         });
       expect(res.status).toBe(400);
       expect(res.body.error).toContain('Name and rarity_id are required');
+      expect(deleteImageSpy).toHaveBeenCalled();
     });
 
     it('creates card with image upload and saves to db', async () => {
@@ -388,9 +404,70 @@ describe('API Integration Endpoints', () => {
         if (fs.existsSync(mockClientDir)) fs.rmdirSync(mockClientDir);
       }
     });
+
+    it('does not serve index.html for unhandled /api routes when client dist exists', async () => {
+      const mockClientDir = path.resolve(process.cwd(), '../client/dist');
+      fs.mkdirSync(mockClientDir, { recursive: true });
+      const indexHtmlPath = path.join(mockClientDir, 'index.html');
+      fs.writeFileSync(indexHtmlPath, '<html><body>Client App</body></html>');
+
+      try {
+        const clientApp = createApp();
+        const res = await request(clientApp).get('/api/unhandled-endpoint');
+        expect(res.status).toBe(404);
+      } finally {
+        if (fs.existsSync(indexHtmlPath)) fs.unlinkSync(indexHtmlPath);
+        if (fs.existsSync(mockClientDir)) fs.rmdirSync(mockClientDir);
+      }
+    });
   });
 
   describe('Error handling branches', () => {
+    it('handles database error in listRarities', async () => {
+      const mockPool = {
+        query: vi.fn().mockRejectedValueOnce(new Error('DB failure in listRarities')),
+      };
+      vi.mocked(poolModule.getPool).mockReturnValue(mockPool as any);
+
+      const res = await request(app)
+        .get('/api/admin/rarities')
+        .set('Authorization', `Bearer ${adminToken}`);
+      expect(res.status).toBe(500);
+      expect(res.body.error).toContain('DB failure in listRarities');
+    });
+
+    it('handles database error in listCards', async () => {
+      const mockPool = {
+        query: vi.fn().mockRejectedValueOnce(new Error('DB failure in listCards')),
+      };
+      vi.mocked(poolModule.getPool).mockReturnValue(mockPool as any);
+
+      const res = await request(app).get('/api/cards');
+      expect(res.status).toBe(500);
+      expect(res.body.error).toContain('DB failure in listCards');
+    });
+
+    it('handles database error in getRates', async () => {
+      const mockPool = {
+        query: vi.fn().mockRejectedValueOnce(new Error('DB failure in getRates')),
+      };
+      vi.mocked(poolModule.getPool).mockReturnValue(mockPool as any);
+
+      const res = await request(app).get('/api/gacha/rates');
+      expect(res.status).toBe(500);
+      expect(res.body.error).toContain('DB failure in getRates');
+    });
+
+    it('handles database error in rollGacha', async () => {
+      const mockPool = {
+        query: vi.fn().mockRejectedValueOnce(new Error('DB failure in rollGacha')),
+      };
+      vi.mocked(poolModule.getPool).mockReturnValue(mockPool as any);
+
+      const res = await request(app).post('/api/gacha/pull').send({ count: 1 });
+      expect(res.status).toBe(500);
+      expect(res.body.error).toContain('DB failure in rollGacha');
+    });
     it('handles database error in createRarity', async () => {
       const mockPool = {
         query: vi.fn().mockRejectedValueOnce(new Error('DB duplicate key')),

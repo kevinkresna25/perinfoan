@@ -36,7 +36,10 @@ export function createApp(): express.Express {
   const clientDist = clientDistCandidates.find((dir) => fs.existsSync(dir));
   if (clientDist) {
     app.use(express.static(clientDist));
-    app.get('*', (_req, res) => {
+    app.get('*', (req, res, next) => {
+      if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+        return next();
+      }
       res.sendFile(path.join(clientDist, 'index.html'));
     });
   }

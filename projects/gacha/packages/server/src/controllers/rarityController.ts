@@ -3,19 +3,23 @@ import { v4 as uuidv4 } from 'uuid';
 import { getPool } from '../db/pool.js';
 
 export async function listRarities(_req: Request, res: Response): Promise<void> {
-  const pool = getPool();
-  const [rows] = await pool.query<any[]>(`
-    SELECT r.*, COUNT(c.id) AS card_count
-    FROM rarities r
-    LEFT JOIN cards c ON r.id = c.rarity_id
-    GROUP BY r.id
-    ORDER BY r.sort_order DESC, r.created_at ASC
-  `);
-  res.json({ rarities: rows });
+  try {
+    const pool = getPool();
+    const [rows] = await pool.query<any[]>(`
+      SELECT r.*, COUNT(c.id) AS card_count
+      FROM rarities r
+      LEFT JOIN cards c ON r.id = c.rarity_id
+      GROUP BY r.id
+      ORDER BY r.sort_order DESC, r.created_at ASC
+    `);
+    res.json({ rarities: rows });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || 'Failed to list rarities.' });
+  }
 }
 
 export async function createRarity(req: Request, res: Response): Promise<void> {
-  const { name, color, drop_rate, sort_order } = req.body;
+  const { name, color, drop_rate, sort_order } = req.body ?? {};
   if (!name || !color) {
     res.status(400).json({ error: 'Name and color are required.' });
     return;
@@ -36,7 +40,7 @@ export async function createRarity(req: Request, res: Response): Promise<void> {
 
 export async function updateRarity(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
-  const { name, color, drop_rate, sort_order } = req.body;
+  const { name, color, drop_rate, sort_order } = req.body ?? {};
   const pool = getPool();
 
   try {

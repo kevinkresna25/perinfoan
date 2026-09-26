@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 
 export function adminLogin(req: Request, res: Response): void {
-  const { password } = req.body;
+  const { password } = req.body ?? {};
   if (!password || password !== config.adminPassword) {
     res.status(401).json({ error: 'Invalid admin password.' });
     return;

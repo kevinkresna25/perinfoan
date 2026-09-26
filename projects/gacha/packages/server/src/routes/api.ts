@@ -17,7 +17,7 @@ apiRouter.get('/cards', listCards);
 apiRouter.post('/admin/login', adminLogin);
 
 // Protected Admin Rarities
-apiRouter.get('/admin/rarities', listRarities);
+apiRouter.get('/admin/rarities', requireAdmin, listRarities);
 apiRouter.post('/admin/rarities', requireAdmin, createRarity);
 apiRouter.put('/admin/rarities/:id', requireAdmin, updateRarity);
 apiRouter.delete('/admin/rarities/:id', requireAdmin, deleteRarity);
