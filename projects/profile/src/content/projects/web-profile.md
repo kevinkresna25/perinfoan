@@ -10,7 +10,7 @@ techStack:
   - "TypeScript"
   - "Content Collections"
 contributors:
-  - "Kevin Kresnayana"
+  - "Kresna"
 category: "Core Portal"
 order: 1
 ---
