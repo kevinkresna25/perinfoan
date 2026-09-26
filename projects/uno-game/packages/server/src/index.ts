@@ -11,7 +11,7 @@ import { createUploadRouter } from './routes/uploads.js';
 const app = express();
 const server = createServer(app);
 
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3000;
 const CLIENT_DIST_PATH = path.resolve(process.cwd(), 'packages/client/dist');
 const UPLOADS_PATH = path.resolve(process.cwd(), 'uploads');
 
