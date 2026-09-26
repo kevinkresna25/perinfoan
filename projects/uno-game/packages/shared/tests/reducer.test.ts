@@ -71,4 +71,21 @@ describe('Game State Reducer', () => {
     const nextState = applyCardPlay(state, 'p0', 'red-skip');
     expect(nextState.activePlayerIndex).toBe(2);
   });
+
+  it('resets hasCalledUno to false when drawing a card', () => {
+    const state = createTestState(2);
+    state.players[0].hasCalledUno = true;
+    const nextState = applyDraw(state, 'p0');
+    expect(nextState.players[0].hasCalledUno).toBe(false);
+  });
+
+  it('does not mutate incoming state players when draw2 is played', () => {
+    const state = createTestState(3);
+    state.players[0].hand.push({ id: 'red-draw2', color: 'red', type: 'draw2' });
+    const originalVictimHandCount = state.players[1].hand.length;
+
+    const nextState = applyCardPlay(state, 'p0', 'red-draw2');
+    expect(state.players[1].hand.length).toBe(originalVictimHandCount);
+    expect(nextState.players[1].hand.length).toBe(originalVictimHandCount + 2);
+  });
 });

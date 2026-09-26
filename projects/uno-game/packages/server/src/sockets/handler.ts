@@ -93,6 +93,12 @@ export function setupSocketHandlers(io: Server, roomManager: RoomManager) {
       const room = roomManager.getRoom(currentRoomId);
       if (!room) return;
 
+      if (room.state.status === 'playing') {
+        socket.emit('game:error', { code: 'ALREADY_PLAYING', message: 'Game is already in progress' });
+        if (callback) callback({ success: false, error: 'Game is already in progress' });
+        return;
+      }
+
       const player = room.players.find(p => p.id === currentPlayerId);
       if (!player?.isHost) {
         socket.emit('game:error', { code: 'NOT_HOST', message: 'Only host can start game' });
@@ -106,6 +112,28 @@ export function setupSocketHandlers(io: Server, roomManager: RoomManager) {
         if (callback) callback({ success: true });
       } catch (err: any) {
         socket.emit('game:error', { code: 'START_ERROR', message: err.message });
+        if (callback) callback({ success: false, error: err.message });
+      }
+    });
+
+    socket.on('game:return_to_lobby', (_, callback?: (res: any) => void) => {
+      if (!currentRoomId || !currentPlayerId) return;
+      const room = roomManager.getRoom(currentRoomId);
+      if (!room) return;
+
+      const player = room.players.find(p => p.id === currentPlayerId);
+      if (!player?.isHost) {
+        socket.emit('game:error', { code: 'NOT_HOST', message: 'Only host can return to lobby' });
+        if (callback) callback({ success: false, error: 'Only host can return to lobby' });
+        return;
+      }
+
+      try {
+        room.returnToLobby(currentPlayerId);
+        broadcastRoomState(room.id);
+        if (callback) callback({ success: true });
+      } catch (err: any) {
+        socket.emit('game:error', { code: 'LOBBY_ERROR', message: err.message });
         if (callback) callback({ success: false, error: err.message });
       }
     });
@@ -158,8 +186,12 @@ export function setupSocketHandlers(io: Server, roomManager: RoomManager) {
       if (currentRoomId && currentPlayerId) {
         const room = roomManager.getRoom(currentRoomId);
         if (room) {
-          room.removePlayer(currentPlayerId);
-          broadcastRoomState(room.id);
+          const player = room.players.find(p => p.id === currentPlayerId);
+          // Only remove/disconnect if the disconnecting socket is the player's active socket
+          if (player && player.socketId === socket.id) {
+            room.removePlayer(currentPlayerId);
+            broadcastRoomState(room.id);
+          }
         }
       }
     });

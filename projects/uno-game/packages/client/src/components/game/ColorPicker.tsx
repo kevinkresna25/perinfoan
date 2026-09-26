@@ -5,9 +5,10 @@ import { motion } from 'framer-motion';
 interface ColorPickerProps {
   isOpen: boolean;
   onSelectColor: (color: CardColor) => void;
+  onCancel?: () => void;
 }
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({ isOpen, onSelectColor }) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({ isOpen, onSelectColor, onCancel }) => {
   if (!isOpen) return null;
 
   const colors: { name: CardColor; bg: string; label: string }[] = [
@@ -18,8 +19,12 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ isOpen, onSelectColor 
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div
+      onClick={onCancel}
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
+    >
       <motion.div
+        onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="bg-stone-900 border-2 border-stone-700 rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl"
@@ -41,6 +46,16 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ isOpen, onSelectColor 
             </motion.button>
           ))}
         </div>
+
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="mt-6 w-full py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-400 hover:text-stone-200 text-xs font-bold transition-colors cursor-pointer"
+          >
+            Cancel / Back to Hand
+          </button>
+        )}
       </motion.div>
     </div>
   );

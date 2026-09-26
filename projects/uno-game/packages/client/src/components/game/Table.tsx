@@ -32,6 +32,9 @@ export const Table: React.FC<TableProps> = ({
     wild: 'bg-stone-800',
   }[activeColor];
 
+  // Stable deterministic tilt based on top card id so card doesn't jitter on timer ticks
+  const cardTilt = (topCard.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) % 9) - 4;
+
   return (
     <div className="relative w-full max-w-2xl h-64 md:h-80 rounded-3xl bg-emerald-950/80 border-4 border-emerald-800 shadow-2xl flex flex-col items-center justify-center p-4">
       {/* Toast Alert Banner */}
@@ -84,8 +87,8 @@ export const Table: React.FC<TableProps> = ({
         <div className="flex flex-col items-center">
           <motion.div
             key={topCard.id}
-            initial={{ scale: 0.8, rotate: Math.random() * 12 - 6 }}
-            animate={{ scale: 1, rotate: Math.random() * 8 - 4 }}
+            initial={{ scale: 0.8, rotate: cardTilt * 1.5 }}
+            animate={{ scale: 1, rotate: cardTilt }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
             <UnoCard

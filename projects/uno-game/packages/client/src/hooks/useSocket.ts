@@ -66,6 +66,10 @@ export function useSocket() {
     socketRef.current?.emit('game:start');
   }, []);
 
+  const returnToLobby = useCallback(() => {
+    socketRef.current?.emit('game:return_to_lobby');
+  }, []);
+
   const playCard = useCallback((cardId: string, chosenColor?: CardColor) => {
     socketRef.current?.emit('game:play_card', { cardId, chosenColor });
   }, []);
@@ -92,6 +96,7 @@ export function useSocket() {
     createRoom,
     joinRoom,
     startGame,
+    returnToLobby,
     playCard,
     drawCard,
     callUno,

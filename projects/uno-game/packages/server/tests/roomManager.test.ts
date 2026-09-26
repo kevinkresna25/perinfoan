@@ -72,4 +72,46 @@ describe('Room Manager & Game Room Lifecycle', () => {
     room.state.players[1].hand = [{ id: 'red-3', color: 'red', type: 'number', value: 3 }];
     expect(room.callUno('p2-id')).toBe(true);
   });
+
+  it('resets winnerId and direction when restarting a match', () => {
+    const room = manager.createRoom('HostPlayer', 30, 'host-id', 's1');
+    room.addPlayer('Player2', 'p2-id', 's2');
+    room.start();
+
+    // Simulate match end with reverse direction
+    room.state.winnerId = 'host-id';
+    room.state.direction = -1;
+    room.state.status = 'ended';
+
+    // Restart match
+    room.start();
+    expect(room.state.winnerId).toBeNull();
+    expect(room.state.direction).toBe(1);
+    expect(room.state.status).toBe('playing');
+  });
+
+  it('allows host to return room to lobby from ended state', () => {
+    const room = manager.createRoom('HostPlayer', 30, 'host-id', 's1');
+    room.addPlayer('Player2', 'p2-id', 's2');
+    room.start();
+    room.state.status = 'ended';
+    room.state.winnerId = 'host-id';
+
+    room.returnToLobby('host-id');
+    expect(room.state.status).toBe('lobby');
+    expect(room.state.winnerId).toBeNull();
+    expect(room.state.players[0].hand).toHaveLength(0);
+  });
+
+  it('awards win to remaining player if all opponents disconnect during match', () => {
+    const room = manager.createRoom('HostPlayer', 30, 'host-id', 's1');
+    room.addPlayer('Player2', 'p2-id', 's2');
+    room.start();
+
+    expect(room.state.status).toBe('playing');
+    room.removePlayer('p2-id');
+
+    expect(room.state.status).toBe('ended');
+    expect(room.state.winnerId).toBe('host-id');
+  });
 });

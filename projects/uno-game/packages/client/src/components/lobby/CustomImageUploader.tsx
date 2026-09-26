@@ -22,8 +22,10 @@ export const CustomImageUploader: React.FC<CustomImageUploaderProps> = ({ roomId
     setIsUploading(true);
     setMessage(null);
 
+    const playerId = sessionStorage.getItem('uno_player_id') || '';
     const formData = new FormData();
     formData.append('slot', selectedSlot);
+    formData.append('playerId', playerId);
     formData.append('image', file);
 
     try {

@@ -20,7 +20,7 @@ export function ensureDrawCards(
   let drawPile = [...state.drawPile];
   let discardPile = [...state.discardPile];
 
-  if (drawPile.length < count) {
+  if (drawPile.length < count && discardPile.length > 1) {
     const currentTop = discardPile[discardPile.length - 1];
     const cardsToShuffle = discardPile.slice(0, -1);
     drawPile = [...drawPile, ...shuffleDeck(cardsToShuffle)];
@@ -67,6 +67,7 @@ export function applyCardPlay(
 
   let intermediateState: MasterGameState = {
     ...state,
+    players: state.players.map(p => ({ ...p, hand: [...p.hand] })),
     topCard: card,
     activeColor,
     discardPile: [...state.discardPile, card]
@@ -90,7 +91,8 @@ export function applyCardPlay(
     intermediateState.players[targetIdx] = {
       ...intermediateState.players[targetIdx],
       hand: targetHand,
-      cardsCount: targetHand.length
+      cardsCount: targetHand.length,
+      hasCalledUno: false
     };
   } else if (card.type === 'wild_draw4') {
     turnStep = 2;
@@ -101,7 +103,8 @@ export function applyCardPlay(
     intermediateState.players[targetIdx] = {
       ...intermediateState.players[targetIdx],
       hand: targetHand,
-      cardsCount: targetHand.length
+      cardsCount: targetHand.length,
+      hasCalledUno: false
     };
   }
 
@@ -140,7 +143,7 @@ export function applyDraw(state: MasterGameState, playerId: string): MasterGameS
   const updatedPlayers = newState.players.map((p, idx) => {
     if (idx === playerIndex) {
       const hand = [...p.hand, ...cards];
-      return { ...p, hand, cardsCount: hand.length };
+      return { ...p, hand, cardsCount: hand.length, hasCalledUno: false };
     }
     return p;
   });

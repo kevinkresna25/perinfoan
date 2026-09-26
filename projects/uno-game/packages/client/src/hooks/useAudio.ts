@@ -1,14 +1,40 @@
 import { useCallback, useState } from 'react';
 
+// Singleton AudioContext to prevent browser hardware context exhaustion
+let sharedAudioContext: AudioContext | null = null;
+
+function getAudioContext(): AudioContext | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    if (!sharedAudioContext) {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextClass) {
+        sharedAudioContext = new AudioContextClass();
+      }
+    }
+    if (sharedAudioContext && sharedAudioContext.state === 'suspended') {
+      sharedAudioContext.resume().catch(() => {});
+    }
+    return sharedAudioContext;
+  } catch {
+    return null;
+  }
+}
+
 export function useAudio() {
   const [isMuted, setIsMuted] = useState<boolean>(() => {
-    return localStorage.getItem('uno_muted') === 'true';
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem('uno_muted') === 'true';
+    }
+    return false;
   });
 
   const toggleMute = useCallback(() => {
     setIsMuted((prev) => {
       const next = !prev;
-      localStorage.setItem('uno_muted', String(next));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('uno_muted', String(next));
+      }
       return next;
     });
   }, []);
@@ -16,7 +42,9 @@ export function useAudio() {
   const playTone = useCallback((freq: number, type: OscillatorType, duration: number) => {
     if (isMuted) return;
     try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 

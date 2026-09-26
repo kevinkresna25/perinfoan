@@ -20,6 +20,7 @@ export function App() {
     createRoom,
     joinRoom,
     startGame,
+    returnToLobby,
     playCard,
     drawCard,
     callUno,
@@ -39,6 +40,17 @@ export function App() {
       joinRoom(roomParam.toUpperCase(), storedName);
     }
   }, [joinRoom, gameState]);
+
+  // Keep URL in sync with active room so page refresh reconnects smoothly
+  useEffect(() => {
+    if (gameState?.roomId) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('room') !== gameState.roomId) {
+        url.searchParams.set('room', gameState.roomId);
+        window.history.replaceState({}, '', url.toString());
+      }
+    }
+  }, [gameState?.roomId]);
 
   // Audio triggers on actionLog events
   useEffect(() => {
@@ -213,6 +225,7 @@ export function App() {
       <ColorPicker
         isOpen={Boolean(pendingWildCard)}
         onSelectColor={handleSelectWildColor}
+        onCancel={() => setPendingWildCard(null)}
       />
 
       {/* Error Toast */}
@@ -225,22 +238,31 @@ export function App() {
       {/* Winner Celebration Modal */}
       {gameState.status === 'ended' && winner && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-stone-900 border-2 border-yellow-400 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
-            <div className="text-5xl mb-3">🏆</div>
+          <div className="bg-stone-900 border-2 border-yellow-400 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl space-y-4">
+            <div className="text-5xl">🏆</div>
             <h2 className="text-2xl font-black text-stone-100">MATCH OVER!</h2>
-            <p className="text-yellow-400 font-bold text-lg mt-1 mb-6">
+            <p className="text-yellow-400 font-bold text-lg">
               {winner.name} won the game!
             </p>
             {myPlayer?.isHost ? (
-              <button
-                type="button"
-                onClick={startGame}
-                className="w-full py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-stone-950 font-black text-sm uppercase tracking-wider shadow-lg cursor-pointer"
-              >
-                Play Another Round
-              </button>
+              <div className="space-y-2 pt-2">
+                <button
+                  type="button"
+                  onClick={startGame}
+                  className="w-full py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-stone-950 font-black text-sm uppercase tracking-wider shadow-lg cursor-pointer transition-all"
+                >
+                  Play Another Round
+                </button>
+                <button
+                  type="button"
+                  onClick={returnToLobby}
+                  className="w-full py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 font-bold text-xs uppercase tracking-wider border border-stone-700 cursor-pointer transition-all"
+                >
+                  Return to Lobby
+                </button>
+              </div>
             ) : (
-              <p className="text-xs text-stone-400">Waiting for host to restart...</p>
+              <p className="text-xs text-stone-400">Waiting for host to restart or return to lobby...</p>
             )}
           </div>
         </div>

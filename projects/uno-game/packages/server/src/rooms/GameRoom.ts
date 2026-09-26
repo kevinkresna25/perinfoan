@@ -78,11 +78,12 @@ export class GameRoom {
       throw new Error('Room is full (max 8 players)');
     }
 
+    const isFirstPlayer = this.state.players.length === 0;
     const newPlayer: Player & { hand: Card[] } = {
       id: playerId,
       socketId,
       name,
-      isHost: false,
+      isHost: isFirstPlayer,
       cardsCount: 0,
       hand: [],
       hasCalledUno: false,
@@ -107,6 +108,18 @@ export class GameRoom {
       }
     } else {
       player.isConnected = false;
+
+      // If only 1 player remains connected during active match, award win to that player
+      const connectedPlayers = this.state.players.filter(p => p.isConnected);
+      if (this.state.status === 'playing' && connectedPlayers.length === 1 && this.state.players.length > 1) {
+        const remainingPlayer = connectedPlayers[0];
+        this.state.winnerId = remainingPlayer.id;
+        this.state.status = 'ended';
+        this.stopTurnTimer();
+        if (this.onMessage) {
+          this.onMessage(`🏆 All opponents disconnected. ${remainingPlayer.name} wins!`, 'win');
+        }
+      }
     }
   }
 
@@ -145,6 +158,8 @@ export class GameRoom {
     this.state.discardPile = [topCard];
     this.state.topCard = topCard;
     this.state.activeColor = initialColor;
+    this.state.direction = 1;
+    this.state.winnerId = null;
     this.state.status = 'playing';
     this.state.activePlayerIndex = 0;
     this.state.turnRemainingSeconds = this.state.turnTimeLimit;
@@ -226,6 +241,34 @@ export class GameRoom {
   public setCustomImage(slot: string, url: string): void {
     this.lastActivityAt = Date.now();
     this.state.customImages[slot] = url;
+    if (this.onStateChange) {
+      this.onStateChange();
+    }
+  }
+
+  public returnToLobby(hostPlayerId: string): void {
+    const host = this.state.players.find(p => p.id === hostPlayerId);
+    if (!host?.isHost) {
+      throw new Error('Only host can return to lobby');
+    }
+    this.stopTurnTimer();
+    this.state.status = 'lobby';
+    this.state.winnerId = null;
+    this.state.direction = 1;
+    this.state.drawPile = [];
+    this.state.discardPile = [];
+    this.state.drawPileCount = 0;
+    this.state.players.forEach(p => {
+      p.hand = [];
+      p.cardsCount = 0;
+      p.hasCalledUno = false;
+    });
+    if (this.onMessage) {
+      this.onMessage('Returned to lobby', 'info');
+    }
+    if (this.onStateChange) {
+      this.onStateChange();
+    }
   }
 
   private startTurnTimer(): void {
@@ -233,6 +276,12 @@ export class GameRoom {
     this.timerInterval = setInterval(() => {
       if (this.state.status !== 'playing') {
         this.stopTurnTimer();
+        return;
+      }
+
+      // If no players are currently connected, pause timer and do not update activity
+      const hasConnectedPlayers = this.state.players.some(p => p.isConnected);
+      if (!hasConnectedPlayers) {
         return;
       }
 

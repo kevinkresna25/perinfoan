@@ -12,8 +12,13 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+    volumes:
+      - uno-uploads:/app/uploads
     networks:
       - perinfoan-net
+
+volumes:
+  uno-uploads:
 
 networks:
   perinfoan-net:

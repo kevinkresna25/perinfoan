@@ -22,10 +22,22 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
   onStartGame,
   onCustomImageUploaded,
 }) => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState<string>(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem('uno_player_name') || '';
+    }
+    return '';
+  });
   const [joinCode, setJoinCode] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+
+  const handleNameChange = (val: string) => {
+    setName(val);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('uno_player_name', val);
+    }
+  };
 
   const handleCopyLink = () => {
     if (!roomId) return;
@@ -70,7 +82,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                 type="text"
                 placeholder="e.g. Christopher"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => handleNameChange(e.target.value)}
                 maxLength={20}
                 className="w-full bg-stone-800 border border-stone-700 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-hidden focus:border-yellow-400"
               />
