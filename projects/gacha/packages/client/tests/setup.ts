@@ -1,3 +1,10 @@
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
+
+afterEach(() => {
+  cleanup();
+});
+
 // Test environment setup for vitest in node 22+
 if (typeof globalThis.localStorage === 'undefined' || typeof globalThis.localStorage?.getItem !== 'function') {
   const store = new Map<string, string>();
