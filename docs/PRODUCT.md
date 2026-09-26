@@ -46,7 +46,7 @@ Portal agregator proyek yang memadukan estetika editorial zine berkelas dengan a
 ## Evidence on Hand
 
 - Data inisial: Profil inisial dan template anggota untuk onboarding Git PR.
-- Proyek inisial: Web Profile Perinfoan (Live) dan UNO Game (In Development).
+- Proyek inisial: Web Profile Perinfoan (Live) dan UNO Game (Live).
 
 ## Product Principles
 

@@ -1,43 +1,89 @@
-# Astro Starter Kit: Minimal
+# 🌐 Perinfoan Web Profile
 
-```sh
-npm create astro@latest -- --template minimal
-```
+> Rumah digital dan etalase karya bersama lingkaran Perinfoan.  
+> Domain resmi: [https://perinfoan.web.id](https://perinfoan.web.id)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-## 🚀 Project Structure
+## 📌 Deskripsi Proyek
 
-Inside of your Astro project, you'll see the following folders and files:
+Web Profile utama Perinfoan dibangun dengan **Astro** dan **Tailwind CSS** mengusung arsitektur *Static Site Generation (SSG)* yang sangat ringan (~15–20MB RAM) dan berestetika *Indie Studio Zine & Collector Trading Cards*.
+
+Seluruh data anggota dan etalase proyek dikelola secara kolaboratif menggunakan **Astro Content Collections** dengan validasi skema Zod.
+
+---
+
+## 📂 Struktur Proyek
 
 ```text
-/
-├── public/
+projects/profile/
+├── public/                     # Aset statis publik (favicon, icons)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── content/                # Content Collections (Data Markdown)
+│   │   ├── members/            # Kartu profil anggota (kresna.md, mas-chris.md, dll)
+│   │   └── projects/           # Showcase proyek (web-profile.md, uno-game.md)
+│   ├── layouts/                # Template layout halaman (Layout.astro)
+│   ├── pages/                  # Halaman web utama (index.astro)
+│   ├── styles/                 # Styling global & tema zine (global.css)
+│   └── content.config.ts       # Definisi skema Zod content collections
+├── astro.config.mjs            # Konfigurasi Astro & Tailwind CSS v4
+├── Dockerfile                  # Multi-stage build Nginx Alpine
+└── docker-compose.yml          # Konfigurasi container di perinfoan-net
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🤝 Panduan Kontribusi Anggota (Update Kartu Profil)
 
-Any static assets, like images, can be placed in the `public/` directory.
+Setiap anggota Perinfoan dapat memperbarui profil kartu masing-masing melalui GitHub Pull Request:
 
-## 🧞 Commands
+1. **Buat Branch Baru**:
+   ```bash
+   git checkout -b profile/nama-kamu
+   ```
+2. **Edit / Tambah File Profil**:
+   Buka folder `src/content/members/`, pilih atau buat file markdown baru (misal `nama-kamu.md`). Isi frontmatter sesuai format:
+   ```yaml
+   ---
+   name: "Nama Lengkap"
+   nickname: "Panggilan"
+   role: "Peran / Keahlian Utama"
+   avatar: "https://tautan-foto-avatar-kamu.jpg"
+   bio: "Deskripsi singkat tentang dirimu."
+   quote: "Kutipan favorit atau celotehan santai."
+   skills:
+     - "TypeScript"
+     - "React"
+     - "Docker"
+   socials:
+     github: "https://github.com/username"
+     linkedin: "https://linkedin.com/in/username"
+     instagram: "https://instagram.com/username"
+     website: "https://portofolio-kamu.com"
+   order: 1 # Nomor slot urutan kartu
+   ---
+   ```
+3. **Uji Build Lokal**:
+   ```bash
+   npm run build
+   ```
+4. **Commit & Buat Pull Request**:
+   Push branch kamu ke GitHub dan ajukan Pull Request ke branch `main`.
 
-All commands are run from the root of the project, from a terminal:
+---
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## 🚀 Menjalankan Secara Lokal
 
-## 👀 Want to learn more?
+```bash
+# Install dependensi
+npm install
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Jalankan server development
+npm run dev
+
+# Build file statis produksi (ke folder dist/)
+npm run build
+
+# Preview hasil build produksi
+npm run preview
+```

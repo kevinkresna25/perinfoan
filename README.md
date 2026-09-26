@@ -25,17 +25,17 @@ perinfoan/
 │       └── 0001-decoupled-projects-and-cloudflare-ingress.md
 └── projects/               # Direktori seluruh proyek independen
     ├── profile/            # Web Profile utama [Astro + Tailwind]
-    └── uno-game/           # Proyek game UNO [In Development]
+    └── uno-game/           # Proyek game UNO multiplayer [Live]
 ```
 
 ---
 
 ## 🚀 Direktori Proyek (`projects/`)
 
-| Proyek | Kategori | Tech Stack | Status | Dokumentasi |
+| Proyek | Kategori | Tech Stack | Status | Akses / Dokumentasi |
 |---|---|---|---|---|
-| **Web Profile** | Portal Utama | Astro, Tailwind CSS, Docker | 🟢 Live | [Baca README Proyek](projects/profile/README.md) |
-| **UNO Game** | Multiplayer Game | React, Node.js, Socket.io, Tailwind | 🟢 Ready | [Baca README Proyek](projects/uno-game/README.md) |
+| **Web Profile** | Portal Utama | Astro, Tailwind CSS, Docker | 🟢 Live | [perinfoan.web.id](https://perinfoan.web.id) • [README](projects/profile/README.md) |
+| **UNO Game** | Multiplayer Game | React, Node.js, Socket.io, Tailwind | 🟢 Live | [uno.perinfoan.web.id](https://uno.perinfoan.web.id) • [README](projects/uno-game/README.md) |
 
 Setiap proyek memiliki folder terpisah di `projects/<nama-proyek>/` yang dilengkapi dengan `README.md`, `Dockerfile`, dan `docker-compose.yml` sendiri tanpa saling mengganggu proyek lain.
 
@@ -55,4 +55,4 @@ Untuk panduan dan detail arsitektur lebih dalam, silakan pelajari dokumen di dir
 
 Setiap anggota dapat memperbarui kartu profil masing-masing atau mendaftarkan proyek baru melalui GitHub Pull Request.
 
-Panduan teknis langkah demi langkah dapat dilihat langsung di [README Web Profile](projects/profile/README.md#2-panduan-kontribusi-untuk-anggota-grup).
+Panduan teknis langkah demi langkah dapat dilihat langsung di [README Web Profile](projects/profile/README.md#panduan-kontribusi-anggota-update-kartu-profil).
