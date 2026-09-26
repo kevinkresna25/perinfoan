@@ -15,5 +15,3 @@ socials:
   github: "https://github.com/zeroX397"
 order: 2
 ---
-
-Menghadirkan solusi fullstack dari backend hingga frontend. Berjuang bersama circle Perinfoan membangun aplikasi dan eksperimen seru!

@@ -1,7 +1,7 @@
 ---
 name: "Mas Louis"
 nickname: "Louis"
-role: "Software Engineer/ AI Engineer"
+role: "Software Engineer / AI Engineer"
 avatar: "https://github.com/louisdewavt.png"
 bio: "AI Engineer yang siap research dan membangun senjata pemusnah bersama Perinfoan"
 quote: "Jangan lupa tidur"
@@ -11,7 +11,7 @@ skills:
   - "TypeScript"
   - "MySQL"
 socials:
-  github: "https://github.com/louisdewavt"
+  github: "https://my.ubaya.ac.id/img/mhs/160422077_m.jpg"
 order: 3
 ---
 
