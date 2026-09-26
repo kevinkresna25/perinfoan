@@ -24,14 +24,22 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [joinCode, setJoinCode] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
 
   const handleCopyLink = () => {
     if (!roomId) return;
     const url = `${window.location.origin}?room=${roomId}`;
     navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  const handleCopyCode = () => {
+    if (!roomId) return;
+    navigator.clipboard.writeText(roomId);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
   };
 
   // If not yet in a room:
@@ -119,14 +127,21 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
         {/* Room Header & Share Code */}
         <div>
           <span className="text-xs uppercase tracking-widest text-stone-500 font-semibold">Game Room Code</span>
-          <div className="flex items-center justify-center gap-3 mt-1">
-            <span className="text-4xl font-black font-mono tracking-widest text-yellow-400">{roomId}</span>
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+            <span className="text-4xl font-black font-mono tracking-widest text-yellow-400 mr-1">{roomId}</span>
+            <button
+              type="button"
+              onClick={handleCopyCode}
+              className="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-xs font-semibold text-stone-300 border border-stone-700 transition-colors cursor-pointer"
+            >
+              {copiedCode ? 'Copied! ✓' : 'Copy Code'}
+            </button>
             <button
               type="button"
               onClick={handleCopyLink}
               className="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-xs font-semibold text-stone-300 border border-stone-700 transition-colors cursor-pointer"
             >
-              {copied ? 'Copied! ✓' : 'Copy Link'}
+              {copiedLink ? 'Copied! ✓' : 'Copy Link'}
             </button>
           </div>
         </div>
