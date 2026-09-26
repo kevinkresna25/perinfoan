@@ -6,41 +6,46 @@ export function performPull(
   randomFn: () => number = Math.random
 ): RollResult[] {
   const tiersWithCards = rarities
-    .filter((r) => r.cards.length > 0)
+    .filter((r) => (r.cards?.length ?? 0) > 0)
     .sort((a, b) => b.sort_order - a.sort_order);
 
   if (tiersWithCards.length === 0) {
     throw new Error('Gacha pool is empty. No cards are available to pull.');
   }
 
-  // Calculate sum of drop rates across all tiers (or fallback to equal weights if sum is 0)
-  const totalWeight = rarities.reduce((acc, r) => acc + (Number(r.drop_rate) || 0), 0);
-  const normalizedRarities = rarities.map((r) => ({
-    ...r,
-    normalizedWeight: totalWeight > 0 ? (Number(r.drop_rate) / totalWeight) * 100 : 100 / rarities.length,
-  }));
-
   const rollSingle = (forceMinSortOrder?: number): RollResult => {
     let poolForRoll = tiersWithCards;
+    let candidateTiers = rarities;
+
     if (typeof forceMinSortOrder === 'number') {
       const filtered = tiersWithCards.filter((t) => t.sort_order >= forceMinSortOrder);
       if (filtered.length > 0) {
         poolForRoll = filtered;
+        candidateTiers = rarities.filter((r) => r.sort_order >= forceMinSortOrder);
       }
     }
+
+    const candidateTotalWeight = candidateTiers.reduce((acc, r) => acc + (Number(r.drop_rate) || 0), 0);
+    const normalizedCandidates = candidateTiers.map((r) => ({
+      ...r,
+      normalizedWeight:
+        candidateTotalWeight > 0
+          ? (Number(r.drop_rate) / candidateTotalWeight) * 100
+          : 100 / candidateTiers.length,
+    }));
 
     const rollVal = randomFn() * 100; // 0 to 100
     let cumulative = 0;
     let selectedTier: RarityWithCards | null = null;
 
-    for (const tier of normalizedRarities) {
+    for (const tier of normalizedCandidates) {
       cumulative += tier.normalizedWeight;
       if (rollVal < cumulative) {
         // If this tier has cards, use it
-        if (tier.cards.length > 0) {
+        if ((tier.cards?.length ?? 0) > 0) {
           selectedTier = tier;
         } else {
-          // Fallback to highest tier that has cards
+          // Fallback to highest tier in poolForRoll that has cards
           selectedTier = poolForRoll[0];
         }
         break;

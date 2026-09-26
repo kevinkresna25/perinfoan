@@ -108,4 +108,45 @@ describe('Gacha Roll Engine', () => {
     const results = performPull(10, mockPool);
     expect(results).toHaveLength(10);
   });
+
+  it('guarantees at least 1 card with sort_order >= 1 even when all rolls land in sort_order: 0', () => {
+    const poolWithCommon: RarityWithCards[] = [
+      {
+        id: 'rarity-sr',
+        name: 'SR',
+        color: '#A855F7',
+        drop_rate: 10,
+        sort_order: 1,
+        cards: [
+          { id: 'c-sr-1', name: 'SR Mage', rarity_id: 'rarity-sr', image_path: 'sr1.png', description: null }
+        ]
+      },
+      {
+        id: 'rarity-n',
+        name: 'N',
+        color: '#9CA3AF',
+        drop_rate: 90,
+        sort_order: 0,
+        cards: [
+          { id: 'c-n-1', name: 'N Slime', rarity_id: 'rarity-n', image_path: 'n1.png', description: null }
+        ]
+      }
+    ];
+
+    // randomFn returns 0.50 every time -> normally rolls into N (10% - 100%)
+    const results = performPull(10, poolWithCommon, () => 0.50);
+    expect(results).toHaveLength(10);
+
+    // The first 9 cards should be N Slime
+    for (let i = 0; i < 9; i++) {
+      expect(results[i].rarity.name).toBe('N');
+    }
+
+    // The 10th card (index 9) must be guaranteed SR Mage (sort_order >= 1)
+    expect(results[9].rarity.name).toBe('SR');
+    expect(results[9].name).toBe('SR Mage');
+
+    const hasGuaranteed = results.some((r) => r.rarity.name === 'SR');
+    expect(hasGuaranteed).toBe(true);
+  });
 });
