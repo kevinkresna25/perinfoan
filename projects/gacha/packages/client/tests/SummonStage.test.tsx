@@ -70,6 +70,15 @@ describe('SummonStage Component', () => {
 
     expect(inventory.recordPulls).toHaveBeenCalledWith([mockCard1]);
 
+    // Booster pack appears with Brewek Pack button
+    await waitFor(() => {
+      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+    });
+
+    // Skip to reveal all to test summary grid
+    const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
+    fireEvent.click(skipBtn);
+
     await waitFor(() => {
       expect(screen.getByText('Celestial Dragon')).toBeDefined();
     });
@@ -92,6 +101,13 @@ describe('SummonStage Component', () => {
 
     const pull1Btn = screen.getByRole('button', { name: /Summon x1$/i });
     fireEvent.click(pull1Btn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+    });
+
+    const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
+    fireEvent.click(skipBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Celestial Dragon')).toBeDefined();
@@ -118,6 +134,13 @@ describe('SummonStage Component', () => {
     expect(inventory.recordPulls).toHaveBeenCalledWith(cards10);
 
     await waitFor(() => {
+      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+    });
+
+    const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
+    fireEvent.click(skipBtn);
+
+    await waitFor(() => {
       expect(screen.getByText('Celestial Warrior 1')).toBeDefined();
       expect(screen.getByText('Celestial Warrior 10')).toBeDefined();
     });
@@ -132,6 +155,13 @@ describe('SummonStage Component', () => {
     render(<SummonStage onOpenRates={mockOnOpenRates} />);
 
     fireEvent.click(screen.getByRole('button', { name: /Summon x10/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+    });
+
+    const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
+    fireEvent.click(skipBtn);
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /Reveal All Cards/i })).toBeDefined();
@@ -152,6 +182,13 @@ describe('SummonStage Component', () => {
     render(<SummonStage onOpenRates={mockOnOpenRates} />);
 
     fireEvent.click(screen.getByRole('button', { name: /Summon x1$/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+    });
+
+    const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
+    fireEvent.click(skipBtn);
 
     await waitFor(() => {
       expect(screen.getByText('Celestial Dragon')).toBeDefined();
