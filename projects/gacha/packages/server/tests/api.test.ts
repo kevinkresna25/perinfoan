@@ -390,8 +390,15 @@ describe('API Integration Endpoints', () => {
 
     it('serves client static index.html when dist exists', async () => {
       const mockClientDir = path.resolve(process.cwd(), '../client/dist');
-      fs.mkdirSync(mockClientDir, { recursive: true });
+      const existedBefore = fs.existsSync(mockClientDir);
       const indexHtmlPath = path.join(mockClientDir, 'index.html');
+      const hadIndexHtml = fs.existsSync(indexHtmlPath);
+      let originalContent: string | null = null;
+      if (hadIndexHtml) {
+        originalContent = fs.readFileSync(indexHtmlPath, 'utf-8');
+      }
+
+      fs.mkdirSync(mockClientDir, { recursive: true });
       fs.writeFileSync(indexHtmlPath, '<html><body>Client App</body></html>');
 
       try {
@@ -400,15 +407,30 @@ describe('API Integration Endpoints', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Client App');
       } finally {
-        if (fs.existsSync(indexHtmlPath)) fs.unlinkSync(indexHtmlPath);
-        if (fs.existsSync(mockClientDir)) fs.rmdirSync(mockClientDir);
+        if (originalContent !== null) {
+          fs.writeFileSync(indexHtmlPath, originalContent);
+        } else if (fs.existsSync(indexHtmlPath)) {
+          fs.unlinkSync(indexHtmlPath);
+        }
+        if (!existedBefore && fs.existsSync(mockClientDir)) {
+          try {
+            fs.rmdirSync(mockClientDir);
+          } catch {}
+        }
       }
     });
 
     it('does not serve index.html for unhandled /api routes when client dist exists', async () => {
       const mockClientDir = path.resolve(process.cwd(), '../client/dist');
-      fs.mkdirSync(mockClientDir, { recursive: true });
+      const existedBefore = fs.existsSync(mockClientDir);
       const indexHtmlPath = path.join(mockClientDir, 'index.html');
+      const hadIndexHtml = fs.existsSync(indexHtmlPath);
+      let originalContent: string | null = null;
+      if (hadIndexHtml) {
+        originalContent = fs.readFileSync(indexHtmlPath, 'utf-8');
+      }
+
+      fs.mkdirSync(mockClientDir, { recursive: true });
       fs.writeFileSync(indexHtmlPath, '<html><body>Client App</body></html>');
 
       try {
@@ -416,8 +438,16 @@ describe('API Integration Endpoints', () => {
         const res = await request(clientApp).get('/api/unhandled-endpoint');
         expect(res.status).toBe(404);
       } finally {
-        if (fs.existsSync(indexHtmlPath)) fs.unlinkSync(indexHtmlPath);
-        if (fs.existsSync(mockClientDir)) fs.rmdirSync(mockClientDir);
+        if (originalContent !== null) {
+          fs.writeFileSync(indexHtmlPath, originalContent);
+        } else if (fs.existsSync(indexHtmlPath)) {
+          fs.unlinkSync(indexHtmlPath);
+        }
+        if (!existedBefore && fs.existsSync(mockClientDir)) {
+          try {
+            fs.rmdirSync(mockClientDir);
+          } catch {}
+        }
       }
     });
   });
