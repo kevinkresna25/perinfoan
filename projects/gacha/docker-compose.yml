@@ -26,7 +26,7 @@ services:
     container_name: gacha-app
     restart: always
     ports:
-      - "${HOST_PORT:-${PORT:-3004}}:${PORT:-3004}"
+      - "${HOST_PORT:-3004}:${PORT:-3000}"
     env_file: ".env"
     volumes:
       - gacha_card_uploads:/app/storage/uploads/cards
