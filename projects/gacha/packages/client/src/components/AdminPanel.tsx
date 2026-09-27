@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Trash2, Upload, Lock, ShieldCheck } from 'lucide-react';
 import {
   loginAdmin,
@@ -24,12 +24,20 @@ export const AdminPanel: React.FC = () => {
   const [cardRarity, setCardRarity] = useState('');
   const [cardDesc, setCardDesc] = useState('');
   const [cardFile, setCardFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // Form states for new rarity
   const [rarityName, setRarityName] = useState('');
   const [rarityColor, setRarityColor] = useState('#a855f7');
   const [rarityRate, setRarityRate] = useState(10);
   const [raritySort, setRaritySort] = useState(1);
+
+  // Form states for editing an existing rarity
+  const [editingRarityId, setEditingRarityId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editColor, setEditColor] = useState('#a855f7');
+  const [editRate, setEditRate] = useState(0);
+  const [editSort, setEditSort] = useState(0);
 
   const loadData = () => {
     fetchCards().then((res) => setCards(res.cards));
@@ -72,6 +80,9 @@ export const AdminPanel: React.FC = () => {
       setCardName('');
       setCardDesc('');
       setCardFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       loadData();
       setStatusMessage('Card uploaded successfully!');
     } catch (err: any) {
@@ -104,6 +115,38 @@ export const AdminPanel: React.FC = () => {
       setRarityName('');
       loadData();
       setStatusMessage('Rarity tier created!');
+    } catch (err: any) {
+      setStatusMessage(err.message);
+    }
+  };
+
+  const startEditRarity = (r: Rarity) => {
+    setEditingRarityId(r.id);
+    setEditName(r.name);
+    setEditColor(r.color);
+    setEditRate(Number(r.drop_rate) || 0);
+    setEditSort(r.sort_order ?? 0);
+  };
+
+  const cancelEditRarity = () => {
+    setEditingRarityId(null);
+  };
+
+  const handleUpdateRarity = async (id: string) => {
+    try {
+      await saveRarityApi(
+        {
+          id,
+          name: editName,
+          color: editColor,
+          drop_rate: editRate,
+          sort_order: editSort,
+        },
+        token
+      );
+      setEditingRarityId(null);
+      loadData();
+      setStatusMessage('Rarity tier updated!');
     } catch (err: any) {
       setStatusMessage(err.message);
     }
@@ -148,7 +191,8 @@ export const AdminPanel: React.FC = () => {
     );
   }
 
-  const totalRate = rarities.reduce((sum, r) => sum + (Number(r.drop_rate) || 0), 0);
+  const totalRate = Math.round(rarities.reduce((sum, r) => sum + (Number(r.drop_rate) || 0), 0) * 100) / 100;
+  const isRate100 = Math.abs(totalRate - 100) < 0.01;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -226,8 +270,9 @@ export const AdminPanel: React.FC = () => {
               onChange={(e) => setCardDesc(e.target.value)}
               className="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100"
             />
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="image/*"
                 onChange={(e) => setCardFile(e.target.files?.[0] || null)}
@@ -236,7 +281,7 @@ export const AdminPanel: React.FC = () => {
               />
               <button
                 type="submit"
-                className="ml-auto px-6 py-2 rounded-xl font-bold bg-purple-600 hover:bg-purple-500 text-white text-sm flex items-center gap-2"
+                className="sm:ml-auto w-full sm:w-auto px-6 py-2 rounded-xl font-bold bg-purple-600 hover:bg-purple-500 text-white text-sm flex items-center justify-center gap-2"
               >
                 <Upload className="w-4 h-4" /> Save Card
               </button>
@@ -271,7 +316,7 @@ export const AdminPanel: React.FC = () => {
           {/* Rarity creator */}
           <form onSubmit={handleCreateRarity} className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
             <h3 className="font-bold text-slate-100 text-base">Add Custom Rarity Tier</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
               <input
                 type="text"
                 placeholder="Rarity Name (e.g. UR)"
@@ -285,7 +330,7 @@ export const AdminPanel: React.FC = () => {
                   type="color"
                   value={rarityColor}
                   onChange={(e) => setRarityColor(e.target.value)}
-                  className="w-10 h-10 rounded-lg cursor-pointer bg-transparent"
+                  className="w-10 h-10 rounded-lg cursor-pointer bg-transparent shrink-0"
                 />
                 <span className="text-xs font-mono text-slate-300">{rarityColor}</span>
               </div>
@@ -294,7 +339,15 @@ export const AdminPanel: React.FC = () => {
                 step="0.01"
                 placeholder="Drop Rate %"
                 value={rarityRate}
-                onChange={(e) => setRarityRate(parseFloat(e.target.value))}
+                onChange={(e) => setRarityRate(parseFloat(e.target.value) || 0)}
+                required
+                className="px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100"
+              />
+              <input
+                type="number"
+                placeholder="Sort Order"
+                value={raritySort}
+                onChange={(e) => setRaritySort(parseInt(e.target.value, 10) || 0)}
                 required
                 className="px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100"
               />
@@ -306,40 +359,115 @@ export const AdminPanel: React.FC = () => {
               </button>
             </div>
             <p className="text-xs text-slate-400">
-              Total configured rates: <strong className={totalRate === 100 ? 'text-emerald-400' : 'text-amber-400'}>{totalRate}%</strong> (Rates are normalized automatically if not 100%).
+              Total configured rates: <strong className={isRate100 ? 'text-emerald-400' : 'text-amber-400'}>{totalRate}%</strong> (Rates are normalized automatically if not 100%).
             </p>
           </form>
 
           {/* Rarity Table */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-            <table className="w-full text-left text-sm text-slate-300">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-x-auto">
+            <table className="w-full text-left text-sm text-slate-300 min-w-[500px]">
               <thead className="bg-slate-950 text-xs text-slate-400 uppercase">
                 <tr>
-                  <th className="px-6 py-3">Tier</th>
-                  <th className="px-6 py-3">Color</th>
-                  <th className="px-6 py-3">Drop Rate</th>
-                  <th className="px-6 py-3">Action</th>
+                  <th className="px-4 sm:px-6 py-3">Tier</th>
+                  <th className="px-4 sm:px-6 py-3">Color</th>
+                  <th className="px-4 sm:px-6 py-3">Drop Rate</th>
+                  <th className="px-4 sm:px-6 py-3">Order</th>
+                  <th className="px-4 sm:px-6 py-3">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800">
-                {rarities.map((r) => (
-                  <tr key={r.id}>
-                    <td className="px-6 py-4 font-bold text-slate-100">{r.name}</td>
-                    <td className="px-6 py-4">
-                      <span className="inline-block w-4 h-4 rounded-full mr-2 align-middle" style={{ backgroundColor: r.color }} />
-                      <span className="font-mono text-xs">{r.color}</span>
-                    </td>
-                    <td className="px-6 py-4 font-mono">{r.drop_rate}%</td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => handleDeleteRarity(r.id)}
-                        className="text-rose-400 hover:text-rose-300 text-xs font-semibold"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {rarities.map((r) => {
+                  const isEditing = editingRarityId === r.id;
+                  if (isEditing) {
+                    return (
+                      <tr key={r.id} className="bg-slate-800/40">
+                        <td className="px-4 sm:px-6 py-3">
+                          <input
+                            type="text"
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            className="w-full px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-700 text-xs text-slate-100"
+                          />
+                        </td>
+                        <td className="px-4 sm:px-6 py-3">
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="color"
+                              value={editColor}
+                              onChange={(e) => setEditColor(e.target.value)}
+                              className="w-6 h-6 rounded cursor-pointer bg-transparent shrink-0"
+                            />
+                            <span className="font-mono text-xs text-slate-300">{editColor}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-3">
+                          <div className="flex items-center gap-1">
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={editRate}
+                              onChange={(e) => setEditRate(parseFloat(e.target.value) || 0)}
+                              className="w-20 px-2 py-1 rounded-lg bg-slate-950 border border-slate-700 text-xs font-mono text-slate-100"
+                            />
+                            <span className="text-xs text-slate-400">%</span>
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-3">
+                          <input
+                            type="number"
+                            value={editSort}
+                            onChange={(e) => setEditSort(parseInt(e.target.value, 10) || 0)}
+                            className="w-16 px-2 py-1 rounded-lg bg-slate-950 border border-slate-700 text-xs font-mono text-slate-100"
+                          />
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleUpdateRarity(r.id)}
+                              className="text-emerald-400 hover:text-emerald-300 text-xs font-semibold"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={cancelEditRarity}
+                              className="text-slate-400 hover:text-slate-300 text-xs font-semibold"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+
+                  return (
+                    <tr key={r.id}>
+                      <td className="px-4 sm:px-6 py-4 font-bold text-slate-100">{r.name}</td>
+                      <td className="px-4 sm:px-6 py-4">
+                        <span className="inline-block w-4 h-4 rounded-full mr-2 align-middle" style={{ backgroundColor: r.color }} />
+                        <span className="font-mono text-xs">{r.color}</span>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 font-mono">{r.drop_rate}%</td>
+                      <td className="px-4 sm:px-6 py-4 font-mono">{r.sort_order ?? 0}</td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => startEditRarity(r)}
+                            className="text-purple-400 hover:text-purple-300 text-xs font-semibold"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteRarity(r.id)}
+                            className="text-rose-400 hover:text-rose-300 text-xs font-semibold"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

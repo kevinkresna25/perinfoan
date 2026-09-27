@@ -301,5 +301,59 @@ describe('AdminPanel Component', () => {
       expect(window.confirm).toHaveBeenCalled();
       expect(api.deleteRarityApi).not.toHaveBeenCalled();
     });
+
+    it('allows editing an existing rarity tier and saving updates', async () => {
+      vi.mocked(api.saveRarityApi).mockResolvedValueOnce();
+
+      render(<AdminPanel />);
+
+      await waitFor(() => {
+        fireEvent.click(screen.getByText('Manage Rarities (2)'));
+      });
+
+      const editButtons = screen.getAllByRole('button', { name: /edit/i });
+      expect(editButtons.length).toBe(2);
+      fireEvent.click(editButtons[0]); // Edit SSR
+
+      // In edit mode: Save and Cancel buttons appear
+      const saveButton = screen.getByRole('button', { name: /save/i });
+      const cancelButton = screen.getByRole('button', { name: /cancel/i });
+      expect(saveButton).toBeDefined();
+      expect(cancelButton).toBeDefined();
+
+      // Find the name input in the edit row with current value 'SSR'
+      const nameInput = screen.getByDisplayValue('SSR');
+      fireEvent.change(nameInput, { target: { value: 'SSR+' } });
+
+      fireEvent.click(saveButton);
+
+      await waitFor(() => {
+        expect(api.saveRarityApi).toHaveBeenCalledWith(
+          expect.objectContaining({
+            id: 'r-ssr',
+            name: 'SSR+',
+          }),
+          'test-token'
+        );
+        expect(screen.getByText('Rarity tier updated!')).toBeDefined();
+      });
+    });
+
+    it('cancels editing an existing rarity tier', async () => {
+      render(<AdminPanel />);
+
+      await waitFor(() => {
+        fireEvent.click(screen.getByText('Manage Rarities (2)'));
+      });
+
+      const editButtons = screen.getAllByRole('button', { name: /edit/i });
+      fireEvent.click(editButtons[0]);
+
+      const cancelButton = screen.getByRole('button', { name: /cancel/i });
+      fireEvent.click(cancelButton);
+
+      expect(screen.queryByRole('button', { name: /save/i })).toBeNull();
+      expect(api.saveRarityApi).not.toHaveBeenCalled();
+    });
   });
 });
