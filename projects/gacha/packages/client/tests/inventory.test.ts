@@ -53,6 +53,14 @@ describe('Player Local Inventory Service', () => {
     expect(inv).toEqual({});
   });
 
+  it('safely returns empty object without throwing when localStorage contains "null" or non-object values', () => {
+    for (const corruptVal of ['null', '123', 'true', '[]', '"string"']) {
+      localStorage.setItem('gacha_player_inventory', corruptVal);
+      const inv = getLocalInventory();
+      expect(inv).toEqual({});
+    }
+  });
+
   it('clears inventory on resetLocalInventory', () => {
     recordPulls([mockCard]);
     expect(getLocalInventory()['c1']).toBeDefined();

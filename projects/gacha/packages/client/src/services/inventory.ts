@@ -5,7 +5,8 @@ const STORAGE_KEY = 'gacha_player_inventory';
 export function getLocalInventory(): Record<string, InventoryItem> {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
+    const parsed = raw ? JSON.parse(raw) : {};
+    return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
   } catch {
     return {};
   }

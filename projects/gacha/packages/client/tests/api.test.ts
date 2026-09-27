@@ -88,6 +88,30 @@ describe('Client API Service', () => {
     await expect(pullGacha(1)).rejects.toThrow('Gacha pool is empty.');
   });
 
+  it('pullGacha handles non-JSON error response gracefully using statusText', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      statusText: 'Bad Gateway',
+      json: async () => {
+        throw new Error('Not JSON');
+      },
+    } as any);
+
+    await expect(pullGacha(1)).rejects.toThrow('Bad Gateway');
+  });
+
+  it('createCardApi handles non-JSON error response gracefully', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      statusText: 'Payload Too Large',
+      json: async () => {
+        throw new Error('Not JSON');
+      },
+    } as any);
+
+    await expect(createCardApi(new FormData(), 'token')).rejects.toThrow('Payload Too Large');
+  });
+
   it('loginAdmin sends password and returns token', async () => {
     globalThis.fetch = vi.fn().mockResolvedValue({
       ok: true,

@@ -78,4 +78,35 @@ describe('RatesModal Component', () => {
       expect(screen.getByText('1.00%')).toBeDefined();
     });
   });
+
+  it('calls onClose when clicking backdrop overlay but not modal card content', async () => {
+    vi.mocked(api.fetchRates).mockResolvedValueOnce({
+      rarities: mockRarities,
+      total_cards: 25,
+    });
+
+    render(<RatesModal onClose={mockOnClose} />);
+
+    const backdrop = screen.getByTestId('rates-modal-backdrop');
+    // Clicking backdrop itself triggers onClose
+    fireEvent.click(backdrop);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+
+    // Clicking content inside does not trigger onClose
+    const title = screen.getByText('Summon Odds & Details');
+    fireEvent.click(title);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onClose when pressing Escape key', async () => {
+    vi.mocked(api.fetchRates).mockResolvedValueOnce({
+      rarities: mockRarities,
+      total_cards: 25,
+    });
+
+    render(<RatesModal onClose={mockOnClose} />);
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
 });

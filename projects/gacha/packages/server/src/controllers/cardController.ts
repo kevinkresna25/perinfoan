@@ -49,7 +49,7 @@ export async function createCard(req: Request, res: Response): Promise<void> {
   }
 
   const { name, rarity_id, description } = req.body ?? {};
-  if (!name || !rarity_id) {
+  if (!name || typeof name !== 'string' || !name.trim() || !rarity_id) {
     if (req.file) {
       await deleteCardImage(req.file.filename);
     }
@@ -64,14 +64,14 @@ export async function createCard(req: Request, res: Response): Promise<void> {
   try {
     await pool.query(
       `INSERT INTO cards (id, name, rarity_id, image_path, description) VALUES (?, ?, ?, ?, ?)`,
-      [id, name, rarity_id, image_path, description || null]
+      [id, name.trim(), rarity_id, image_path, description ? description.trim() : null]
     );
     res.status(201).json({
       id,
-      name,
+      name: name.trim(),
       rarity_id,
       image_url: `/uploads/cards/${image_path}`,
-      description,
+      description: description ? description.trim() : description,
     });
   } catch (err: any) {
     await deleteCardImage(image_path);

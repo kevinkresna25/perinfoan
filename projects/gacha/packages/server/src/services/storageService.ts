@@ -55,7 +55,9 @@ export const fileFilter = (
   if (allowedMimes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Invalid file type. Only JPEG, PNG, WEBP, and GIF images are allowed.'));
+    const error = new Error('Invalid file type. Only JPEG, PNG, WEBP, and GIF images are allowed.') as any;
+    error.status = 400;
+    cb(error);
   }
 };
 

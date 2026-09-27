@@ -178,4 +178,39 @@ describe('AlbumView Component', () => {
     // Modal should not open
     expect(screen.queryByText('Reborn in golden celestial fire.')).toBeNull();
   });
+
+  it('renders loading state initially while fetching album data', () => {
+    vi.mocked(api.fetchCards).mockImplementation(() => new Promise(() => {}));
+    vi.mocked(api.fetchRates).mockImplementation(() => new Promise(() => {}));
+
+    render(<AlbumView />);
+    expect(screen.getByText('Loading card album...')).toBeDefined();
+  });
+
+  it('renders error state when fetch fails and allows retry', async () => {
+    vi.mocked(api.fetchCards).mockRejectedValueOnce(new Error('Network error loading cards'));
+    vi.mocked(api.fetchRates).mockResolvedValueOnce({ rarities: mockRarities, total_cards: 3 });
+
+    render(<AlbumView />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Unable to Load Album')).toBeDefined();
+      expect(screen.getByText('Network error loading cards')).toBeDefined();
+    });
+
+    const retryBtn = screen.getByRole('button', { name: /retry/i });
+    expect(retryBtn).toBeDefined();
+
+    // Now mock success for retry
+    vi.mocked(api.fetchCards).mockResolvedValueOnce({ cards: mockCards });
+    vi.mocked(api.fetchRates).mockResolvedValueOnce({ rarities: mockRarities, total_cards: 3 });
+    vi.mocked(inventory.getLocalInventory).mockReturnValue({});
+
+    fireEvent.click(retryBtn);
+
+    await waitFor(() => {
+      expect(screen.queryByText('Unable to Load Album')).toBeNull();
+      expect(screen.getByText('Card Album')).toBeDefined();
+    });
+  });
 });

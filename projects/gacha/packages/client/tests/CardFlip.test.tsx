@@ -58,10 +58,38 @@ describe('CardFlip Component', () => {
     expect(onReveal).not.toHaveBeenCalled();
   });
 
-  it('renders rarity badge with the rarity color', () => {
-    render(<CardFlip card={mockCard} />);
+  it('renders rarity badge with the rarity color and dynamic contrast text', () => {
+    const { rerender } = render(<CardFlip card={mockCard} />);
     const badge = screen.getByText('SSR');
     expect(badge.style.backgroundColor).toBe('rgb(255, 215, 0)');
+    // Gold is bright -> dark text #0f172a (rgb(15, 23, 42))
+    expect(badge.style.color).toBe('rgb(15, 23, 42)');
+
+    // Dark rarity color -> white text #f8fafc (rgb(248, 250, 252))
+    const darkCard: Card = {
+      ...mockCard,
+      rarity: { id: 'r2', name: 'Dark', color: '#1E1B4B' },
+    };
+    rerender(<CardFlip card={darkCard} />);
+    const darkBadge = screen.getByText('Dark');
+    expect(darkBadge.style.color).toBe('rgb(248, 250, 252)');
+  });
+
+  it('supports keyboard accessibility via Enter and Space keys', () => {
+    const onReveal = vi.fn();
+    render(<CardFlip card={mockCard} onReveal={onReveal} />);
+
+    const cardButton = screen.getByRole('button');
+    fireEvent.keyDown(cardButton, { key: 'Enter' });
+    expect(onReveal).toHaveBeenCalledTimes(1);
+
+    // Another card with Space key
+    const onRevealSpace = vi.fn();
+    render(<CardFlip card={{ ...mockCard, id: 'test-2' }} onReveal={onRevealSpace} />);
+    const allButtons = screen.getAllByRole('button');
+    const secondButton = allButtons[allButtons.length - 1];
+    fireEvent.keyDown(secondButton, { key: ' ' });
+    expect(onRevealSpace).toHaveBeenCalledTimes(1);
   });
 
   it('renders correctly when description is null', () => {

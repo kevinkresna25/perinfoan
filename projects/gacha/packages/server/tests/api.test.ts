@@ -200,6 +200,15 @@ describe('API Integration Endpoints', () => {
       expect(res.body.error).toContain('Name and color are required');
     });
 
+    it('rejects rarity creation with whitespace-only name', async () => {
+      const res = await request(app)
+        .post('/api/admin/rarities')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ name: '   ', color: '#ff0000' });
+      expect(res.status).toBe(400);
+      expect(res.body.error).toContain('Name and color are required');
+    });
+
     it('creates rarity successfully', async () => {
       const mockPool = {
         query: vi.fn().mockResolvedValueOnce([{ insertId: 1 }, []]),
@@ -229,6 +238,20 @@ describe('API Integration Endpoints', () => {
         .send({ name: 'UR Updated', color: '#ffea00', drop_rate: 2, sort_order: 5 });
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
+    });
+
+    it('returns 404 when updating non-existent rarity', async () => {
+      const mockPool = {
+        query: vi.fn().mockResolvedValueOnce([{ affectedRows: 0 }, []]),
+      };
+      vi.mocked(poolModule.getPool).mockReturnValue(mockPool as any);
+
+      const res = await request(app)
+        .put('/api/admin/rarities/rarity-nonexistent')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ name: 'UR Updated', color: '#ffea00', drop_rate: 2, sort_order: 5 });
+      expect(res.status).toBe(404);
+      expect(res.body.error).toContain('Rarity not found');
     });
 
     it('prevents deletion of rarity with assigned cards', async () => {
@@ -302,6 +325,22 @@ describe('API Integration Endpoints', () => {
       const res = await request(app)
         .post('/api/admin/cards')
         .set('Authorization', `Bearer ${adminToken}`)
+        .attach('image', Buffer.from('fake-image-content'), {
+          filename: 'test.png',
+          contentType: 'image/png',
+        });
+      expect(res.status).toBe(400);
+      expect(res.body.error).toContain('Name and rarity_id are required');
+      expect(deleteImageSpy).toHaveBeenCalled();
+    });
+
+    it('rejects card creation with whitespace-only name and cleans up uploaded file', async () => {
+      const deleteImageSpy = vi.spyOn(storageService, 'deleteCardImage').mockResolvedValue(true);
+      const res = await request(app)
+        .post('/api/admin/cards')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .field('name', '    ')
+        .field('rarity_id', 'ssr')
         .attach('image', Buffer.from('fake-image-content'), {
           filename: 'test.png',
           contentType: 'image/png',
@@ -568,6 +607,30 @@ describe('API Integration Endpoints', () => {
         .set('Authorization', `Bearer ${adminToken}`);
       expect(res.status).toBe(400);
       expect(res.body.error).toContain('Query card failed');
+    });
+
+    it('handles multer upload error and returns JSON 400', async () => {
+      const res = await request(app)
+        .post('/api/admin/cards')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .field('name', 'Bad File Card')
+        .field('rarity_id', 'ssr')
+        .attach('image', Buffer.from('plain text'), { filename: 'test.txt', contentType: 'text/plain' });
+
+      expect(res.status).toBe(400);
+      expect(res.headers['content-type']).toContain('application/json');
+      expect(res.body.error).toContain('Invalid file type');
+    });
+
+    it('handles multer unexpected field MulterError and returns JSON 400', async () => {
+      const res = await request(app)
+        .post('/api/admin/cards')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .attach('unexpected_field', Buffer.from('fake'), { filename: 'test.png', contentType: 'image/png' });
+
+      expect(res.status).toBe(400);
+      expect(res.headers['content-type']).toContain('application/json');
+      expect(res.body.error).toBeDefined();
     });
   });
 });

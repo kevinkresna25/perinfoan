@@ -57,7 +57,10 @@ export function performPull(
     }
 
     // Pick uniform random card from selected tier
-    const cardIndex = Math.floor(randomFn() * selectedTier.cards.length);
+    const cardIndex = Math.min(
+      Math.floor(randomFn() * selectedTier.cards.length),
+      selectedTier.cards.length - 1
+    );
     const card: Card = selectedTier.cards[cardIndex];
 
     return {

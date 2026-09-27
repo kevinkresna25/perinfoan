@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { CardModal } from '../src/components/CardModal';
@@ -6,6 +6,10 @@ import type { Card, InventoryItem } from '../src/types';
 
 describe('CardModal Component', () => {
   const mockOnClose = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   const mockCard: Card = {
     id: 'card-1',
@@ -71,6 +75,37 @@ describe('CardModal Component', () => {
     const closeBtn = screen.getByRole('button');
     fireEvent.click(closeBtn);
 
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onClose when clicking backdrop overlay but not modal card content', () => {
+    render(
+      <CardModal
+        card={mockCard}
+        onClose={mockOnClose}
+      />
+    );
+
+    const backdrop = screen.getByTestId('modal-backdrop');
+    // Clicking backdrop itself triggers onClose
+    fireEvent.click(backdrop);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+
+    // Clicking content inside does not trigger onClose
+    const title = screen.getByText('Astral Valkyrie');
+    fireEvent.click(title);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onClose when pressing Escape key', () => {
+    render(
+      <CardModal
+        card={mockCard}
+        onClose={mockOnClose}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: 'Escape' });
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 });

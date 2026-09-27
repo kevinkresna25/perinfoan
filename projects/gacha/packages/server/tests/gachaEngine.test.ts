@@ -149,4 +149,27 @@ describe('Gacha Roll Engine', () => {
     const hasGuaranteed = results.some((r) => r.rarity.name === 'SR');
     expect(hasGuaranteed).toBe(true);
   });
+
+  it('clamps cardIndex safely when randomFn produces upper bound value (1.0)', () => {
+    const multiCardPool: RarityWithCards[] = [
+      {
+        id: 'rarity-r',
+        name: 'R',
+        color: '#3B82F6',
+        drop_rate: 100,
+        sort_order: 1,
+        cards: [
+          { id: 'c-1', name: 'Card 1', rarity_id: 'rarity-r', image_path: '1.png', description: null },
+          { id: 'c-2', name: 'Card 2', rarity_id: 'rarity-r', image_path: '2.png', description: null },
+          { id: 'c-3', name: 'Card 3', rarity_id: 'rarity-r', image_path: '3.png', description: null },
+        ],
+      },
+    ];
+
+    // randomFn returning 1.0 (boundary condition)
+    const results = performPull(1, multiCardPool, () => 1.0);
+    expect(results).toHaveLength(1);
+    // Should select the last card safely (index 2) without undefined card error
+    expect(results[0].name).toBe('Card 3');
+  });
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { getContrastTextColor } from '../utils/contrast';
 import type { Card } from '../types';
 
 interface CardFlipProps {
@@ -23,12 +24,21 @@ export const CardFlip: React.FC<CardFlipProps> = ({ card, isNew, revealed = fals
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleClick}
-      className="cursor-pointer perspective-1000 w-full max-w-[240px] aspect-[2/3] mx-auto select-none"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+      className="cursor-pointer perspective-1000 w-full max-w-[240px] aspect-[2/3] mx-auto select-none focus:outline-none focus:ring-2 focus:ring-purple-500 rounded-2xl"
     >
       <motion.div
-        className="w-full h-full relative transform-style-preserve-3d transition-transform duration-700 shadow-2xl rounded-2xl"
+        className="w-full h-full relative transform-style-preserve-3d shadow-2xl rounded-2xl"
         animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={{ duration: 0.7, ease: 'easeInOut' }}
       >
         {/* Card Back (Facedown) */}
         <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border-2 border-indigo-500/40 rounded-2xl flex flex-col items-center justify-center p-4 overflow-hidden group">
@@ -52,7 +62,7 @@ export const CardFlip: React.FC<CardFlipProps> = ({ card, isNew, revealed = fals
 
           <div
             className="absolute top-2 right-2 z-10 px-2.5 py-0.5 rounded-full font-bold text-xs shadow-md"
-            style={{ backgroundColor: card.rarity.color, color: '#0f172a' }}
+            style={{ backgroundColor: card.rarity.color, color: getContrastTextColor(card.rarity.color) }}
           >
             {card.rarity.name}
           </div>

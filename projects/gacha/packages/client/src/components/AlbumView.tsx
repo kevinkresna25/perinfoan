@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 import { fetchCards, fetchRates } from '../services/api';
 import { getLocalInventory } from '../services/inventory';
+import { getContrastTextColor } from '../utils/contrast';
 import { CardModal } from './CardModal';
 import type { Card, Rarity, InventoryItem } from '../types';
 
@@ -10,12 +12,53 @@ export const AlbumView: React.FC = () => {
   const [inventory, setInventory] = useState<Record<string, InventoryItem>>({});
   const [selectedRarity, setSelectedRarity] = useState<string>('all');
   const [activeModalCard, setActiveModalCard] = useState<Card | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      setInventory(getLocalInventory());
+      const [cardsRes, ratesRes] = await Promise.all([fetchCards(), fetchRates()]);
+      setCards(cardsRes.cards);
+      setRarities(ratesRes.rarities);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to load card album data.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setInventory(getLocalInventory());
-    fetchCards().then((res) => setCards(res.cards));
-    fetchRates().then((res) => setRarities(res.rarities));
-  }, []);
+    loadData();
+  }, [loadData]);
+
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[300px]">
+        <Loader2 className="w-10 h-10 text-purple-400 animate-spin mb-4" />
+        <p className="text-sm font-medium text-slate-300">Loading card album...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[300px] text-center">
+        <AlertCircle className="w-12 h-12 text-rose-400 mb-3" />
+        <h3 className="text-lg font-bold text-slate-100 mb-1">Unable to Load Album</h3>
+        <p className="text-sm text-slate-400 max-w-md mb-6">{error}</p>
+        <button
+          onClick={loadData}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all shadow-lg shadow-purple-600/20"
+        >
+          <RefreshCw className="w-4 h-4" />
+          <span>Retry</span>
+        </button>
+      </div>
+    );
+  }
 
   const discoveredCount = cards.filter((c) => inventory[c.id]).length;
   const completionPercentage = cards.length > 0 ? Math.round((discoveredCount / cards.length) * 100) : 0;
@@ -61,10 +104,10 @@ export const AlbumView: React.FC = () => {
             onClick={() => setSelectedRarity(r.id)}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
               selectedRarity === r.id
-                ? 'text-slate-950 font-bold'
+                ? 'font-bold'
                 : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
             }`}
-            style={selectedRarity === r.id ? { backgroundColor: r.color } : {}}
+            style={selectedRarity === r.id ? { backgroundColor: r.color, color: getContrastTextColor(r.color) } : {}}
           >
             {r.name}
           </button>
@@ -90,8 +133,10 @@ export const AlbumView: React.FC = () => {
             >
               {isDiscovered ? (
                 <>
-                  <div className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-bold"
-                    style={{ backgroundColor: card.rarity.color, color: '#0f172a' }}>
+                  <div
+                    className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-bold"
+                    style={{ backgroundColor: card.rarity.color, color: getContrastTextColor(card.rarity.color) }}
+                  >
                     {card.rarity.name}
                   </div>
                   <div className="absolute top-2 left-2 z-10 bg-slate-950/80 text-slate-200 px-1.5 py-0.5 rounded text-[10px] font-bold">

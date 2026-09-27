@@ -1,15 +1,31 @@
 import type { Card, Rarity } from '../types';
 
+async function parseErrorResponse(res: Response, fallbackMessage: string): Promise<string> {
+  if (typeof res.json === 'function') {
+    const data = await res.json().catch(() => null);
+    if (data && typeof data === 'object' && 'error' in data && data.error) {
+      return String(data.error);
+    }
+  }
+  return res.statusText || fallbackMessage;
+}
+
 export async function fetchRates(): Promise<{ rarities: Rarity[]; total_cards: number }> {
   const res = await fetch('/api/gacha/rates');
-  if (!res.ok) throw new Error('Failed to load gacha rates');
+  if (!res.ok) {
+    const errorMsg = await parseErrorResponse(res, 'Failed to load gacha rates');
+    throw new Error(errorMsg);
+  }
   return res.json();
 }
 
 export async function fetchCards(rarityId?: string): Promise<{ cards: Card[] }> {
   const url = rarityId ? `/api/cards?rarity_id=${encodeURIComponent(rarityId)}` : '/api/cards';
   const res = await fetch(url);
-  if (!res.ok) throw new Error('Failed to load card catalog');
+  if (!res.ok) {
+    const errorMsg = await parseErrorResponse(res, 'Failed to load card catalog');
+    throw new Error(errorMsg);
+  }
   return res.json();
 }
 
@@ -19,8 +35,14 @@ export async function pullGacha(count: 1 | 10): Promise<{ results: Card[] }> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ count }),
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Failed to pull cards');
+  if (!res.ok) {
+    const errorMsg = await parseErrorResponse(res, 'Failed to pull cards');
+    throw new Error(errorMsg);
+  }
+  const data = await res.json().catch(() => ({ error: 'Invalid response from server' }));
+  if (data.error && !('results' in data)) {
+    throw new Error(data.error);
+  }
   return data;
 }
 
@@ -30,8 +52,14 @@ export async function loginAdmin(password: string): Promise<string> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password }),
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Invalid credentials');
+  if (!res.ok) {
+    const errorMsg = await parseErrorResponse(res, 'Invalid credentials');
+    throw new Error(errorMsg);
+  }
+  const data = await res.json().catch(() => ({ error: 'Invalid response from server' }));
+  if (!data.token) {
+    throw new Error(data.error || 'Invalid credentials');
+  }
   return data.token;
 }
 
@@ -42,8 +70,8 @@ export async function createCardApi(formData: FormData, token: string): Promise<
     body: formData,
   });
   if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || 'Failed to upload card');
+    const errorMsg = await parseErrorResponse(res, 'Failed to upload card');
+    throw new Error(errorMsg);
   }
 }
 
@@ -53,8 +81,8 @@ export async function deleteCardApi(id: string, token: string): Promise<void> {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || 'Failed to delete card');
+    const errorMsg = await parseErrorResponse(res, 'Failed to delete card');
+    throw new Error(errorMsg);
   }
 }
 
@@ -72,8 +100,8 @@ export async function saveRarityApi(rarity: Partial<Rarity>, token: string): Pro
     body: JSON.stringify(rarity),
   });
   if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || 'Failed to save rarity');
+    const errorMsg = await parseErrorResponse(res, 'Failed to save rarity');
+    throw new Error(errorMsg);
   }
 }
 
@@ -83,7 +111,7 @@ export async function deleteRarityApi(id: string, token: string): Promise<void> 
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || 'Failed to delete rarity');
+    const errorMsg = await parseErrorResponse(res, 'Failed to delete rarity');
+    throw new Error(errorMsg);
   }
 }

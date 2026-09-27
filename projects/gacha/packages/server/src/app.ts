@@ -44,5 +44,11 @@ export function createApp(): express.Express {
     });
   }
 
+  // Error-handling middleware
+  app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    const status = err.status || (err.name === 'MulterError' ? 400 : 500);
+    res.status(status).json({ error: err.message || 'Internal server error' });
+  });
+
   return app;
 }

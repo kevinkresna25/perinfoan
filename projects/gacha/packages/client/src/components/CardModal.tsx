@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Calendar } from 'lucide-react';
+import { getContrastTextColor } from '../utils/contrast';
 import type { Card, InventoryItem } from '../types';
 
 interface CardModalProps {
@@ -9,8 +10,24 @@ interface CardModalProps {
 }
 
 export const CardModal: React.FC<CardModalProps> = ({ card, inventoryItem, onClose }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div
+      data-testid="modal-backdrop"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+    >
       <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
         <button
           onClick={onClose}
@@ -28,7 +45,7 @@ export const CardModal: React.FC<CardModalProps> = ({ card, inventoryItem, onClo
           <div className="flex items-center justify-between mb-2">
             <span
               className="px-2.5 py-0.5 rounded-full text-xs font-bold"
-              style={{ backgroundColor: card.rarity.color, color: '#0f172a' }}
+              style={{ backgroundColor: card.rarity.color, color: getContrastTextColor(card.rarity.color) }}
             >
               {card.rarity.name}
             </span>
