@@ -32,4 +32,16 @@ export async function runMigrations(pool: Pool): Promise<void> {
       ('rarity-r',   'R',   '#3B82F6', 32.00, 1),
       ('rarity-n',   'N',   '#9CA3AF', 50.00, 0);
   `);
+
+  await pool.query(`
+    INSERT IGNORE INTO cards (id, name, rarity_id, image_path, description) VALUES
+      ('card-ssr-1', 'Cosmic Dragon',     'rarity-ssr', 'starter-cosmic-dragon.png',     'Ancient sovereign of starlight and celestial nebulae.'),
+      ('card-ssr-2', 'Solar Valkyrie',    'rarity-ssr', 'starter-solar-valkyrie.png',    'Bringer of cosmic dawn and eternal golden radiance.'),
+      ('card-sr-1',  'Void Assassin',     'rarity-sr',  'starter-void-assassin.png',     'Silent phantom dancing between spatial dimensions.'),
+      ('card-sr-2',  'Astral Sorceress',  'rarity-sr',  'starter-astral-sorceress.png',  'Weaver of stellar constellations and arcane prophecies.'),
+      ('card-r-1',   'Crystal Golem',     'rarity-r',   'starter-crystal-golem.png',     'Towering guardian forged from crystallized comet ore.'),
+      ('card-r-2',   'Nebula Archer',     'rarity-r',   'starter-nebula-archer.png',     'Marksman whose arrows are carved from fallen meteors.'),
+      ('card-n-1',   'Starlight Wisp',    'rarity-n',   'starter-starlight-wisp.png',    'A gentle glowing ember wandering the nocturnal sky.'),
+      ('card-n-2',   'Novice Astrologer', 'rarity-n',   'starter-novice-astrologer.png', 'An apprentice recording the movements of distant moons.');
+  `);
 }

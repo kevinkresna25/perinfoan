@@ -12,9 +12,10 @@ describe('Database Migration', () => {
     } as any;
 
     await runMigrations(mockPool);
-    expect(mockPool.query).toHaveBeenCalledTimes(3);
+    expect(mockPool.query).toHaveBeenCalledTimes(4);
     expect(executedQueries[0]).toContain('CREATE TABLE IF NOT EXISTS rarities');
     expect(executedQueries[1]).toContain('CREATE TABLE IF NOT EXISTS cards');
     expect(executedQueries[2]).toContain('INSERT IGNORE INTO rarities');
+    expect(executedQueries[3]).toContain('INSERT IGNORE INTO cards');
   });
 });

@@ -4,3 +4,4 @@ dist
 storage/uploads/cards/*
 !storage/uploads/cards/.gitkeep
 *.log
+*.zip

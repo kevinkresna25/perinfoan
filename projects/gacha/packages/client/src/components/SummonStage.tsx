@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, RotateCcw, Eye, PackageOpen } from 'lucide-react';
+import { Sparkles, RotateCcw, Eye, PackageOpen, Scissors } from 'lucide-react';
 import { CardFlip } from './CardFlip';
 import { BoosterPack } from './BoosterPack';
 import { CardStackPeel } from './CardStackPeel';
@@ -70,42 +70,86 @@ export const SummonStage: React.FC<SummonStageProps> = ({ onOpenRates }) => {
         </div>
       )}
 
+      {/* Stage: Idle - Interactive Booster Pack Display on Pedestal */}
       {stage === 'idle' && (
-        <div className="text-center max-w-lg">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto mb-8 flex items-center justify-center"
-          >
-            <div className="absolute inset-0 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
-            <div className="w-full h-full rounded-full border-2 border-dashed border-purple-400/30 flex items-center justify-center animate-[spin_30s_linear_infinite]">
-              <div className="w-3/4 h-3/4 rounded-full border border-indigo-400/40" />
-            </div>
-            <Sparkles className="w-16 h-16 text-purple-400 absolute animate-bounce" />
-          </motion.div>
+        <div className="text-center max-w-lg w-full flex flex-col items-center">
+          {/* 3D Booster Pack Preview */}
+          <div className="relative mb-8">
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/25 via-purple-500/25 to-indigo-500/25 rounded-3xl blur-2xl pointer-events-none" />
+            <motion.div
+              initial={{ scale: 0.95, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              whileHover={{ scale: 1.03, rotate: 1 }}
+              transition={{ duration: 0.4 }}
+              className="relative w-56 sm:w-64 aspect-[1/1.55] rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-indigo-400/40 bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950"
+            >
+              {/* Foil Shimmer */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
+
+              {/* Top Crimped Foil Edge */}
+              <div className="h-5 w-full bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 border-b border-slate-500/50 flex items-center justify-around opacity-90 overflow-hidden">
+                {Array.from({ length: 20 }).map((_, i) => (
+                  <div key={i} className="w-1 h-full bg-slate-500/30 skew-x-12" />
+                ))}
+              </div>
+
+              {/* Pack Perforated Tear Strip Preview */}
+              <div className="bg-gradient-to-r from-indigo-900 to-slate-900 px-3 py-2 border-b-2 border-dashed border-amber-400/80 flex items-center justify-between">
+                <span className="text-[10px] font-black text-amber-300 tracking-wider flex items-center gap-1">
+                  <Scissors className="w-3.5 h-3.5 text-amber-400" /> RIP TO BREWEK
+                </span>
+                <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 shadow">
+                  POKEMON STYLE
+                </span>
+              </div>
+
+              {/* Center Pack Art */}
+              <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-pink-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/30 mb-2">
+                  <Sparkles className="w-8 h-8 text-white animate-bounce" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-300 to-purple-300 tracking-wider">
+                  CELESTIAL BOOSTER
+                </h3>
+                <span className="text-[10px] font-extrabold tracking-widest text-indigo-300 uppercase mt-0.5">
+                  BREWEK PACK
+                </span>
+                <div className="mt-3 px-3 py-0.5 rounded-full bg-slate-950/70 border border-indigo-400/30 text-[10px] font-bold text-slate-300">
+                  READY TO TEAR
+                </div>
+              </div>
+
+              {/* Bottom Crimped Edge */}
+              <div className="h-5 w-full bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 border-t border-slate-500/50 flex items-center justify-around opacity-90 overflow-hidden">
+                {Array.from({ length: 20 }).map((_, i) => (
+                  <div key={i} className="w-1 h-full bg-slate-500/30 -skew-x-12" />
+                ))}
+              </div>
+            </motion.div>
+          </div>
 
           <h2 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 mb-2">
             Summon Celestial Cards
           </h2>
-          <p className="text-slate-400 text-sm mb-8">
-            Experience the thrill of tearing booster packs! Collect all rarities to complete your album.
+          <p className="text-slate-400 text-sm mb-6 max-w-md">
+            Brewek Pokemon-Style Booster Pack! Rip the foil wrapper, peel through cards one-by-one with holographic edge peeks, and collect all rarities!
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
             <button
               onClick={() => handlePull(1)}
               disabled={pulling}
-              className="px-8 py-3.5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+              className="flex-1 py-3.5 px-5 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
             >
-              Summon x1
+              {pulling ? 'Summoning...' : 'Summon x1'}
             </button>
             <button
               onClick={() => handlePull(10)}
               disabled={pulling}
-              className="px-8 py-3.5 rounded-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-900/30 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+              className="flex-1 py-3.5 px-5 rounded-xl font-black bg-gradient-to-r from-amber-500 via-purple-600 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white shadow-xl shadow-purple-900/40 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Sparkles className="w-4 h-4" />
-              Summon x10
+              <Sparkles className="w-4 h-4 text-amber-300" />
+              {pulling ? 'Summoning...' : 'Summon x10'}
             </button>
           </div>
 
@@ -146,7 +190,7 @@ export const SummonStage: React.FC<SummonStageProps> = ({ onOpenRates }) => {
               onClick={handleReset}
               className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
             >
-              <RotateCcw className="w-4 h-4" /> Summon Again
+              <RotateCcw className="w-4 h-4" /> Brewek Another Pack (Summon Again)
             </button>
 
             <div className="flex items-center gap-2">
