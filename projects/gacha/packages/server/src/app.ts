@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { apiRouter } from './routes/api.js';
 import { config } from './config/env.js';
 import { getFallbackCardSvg } from './services/storageService.js';
@@ -30,8 +31,9 @@ export function createApp(): express.Express {
 
   // Serve static client bundle if it exists
   const clientDistCandidates = [
-    path.resolve(process.cwd(), '../client/dist'),
     path.resolve(process.cwd(), 'packages/client/dist'),
+    path.resolve(process.cwd(), '../client/dist'),
+    path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist'),
   ];
   const clientDist = clientDistCandidates.find((dir) => fs.existsSync(dir));
   if (clientDist) {
