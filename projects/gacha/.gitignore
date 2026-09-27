@@ -1,0 +1,7 @@
+node_modules
+dist
+.env
+storage/uploads/cards/*
+!storage/uploads/cards/.gitkeep
+*.log
+*.zip
