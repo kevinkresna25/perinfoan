@@ -86,7 +86,7 @@ describe('SummonStage Component', () => {
     // Should have "NEW!" badge since local inventory didn't contain it
     expect(screen.getByText('NEW!')).toBeDefined();
     expect(screen.getByRole('button', { name: /Summon Again/i })).toBeDefined();
-    expect(screen.getByRole('button', { name: /Reveal All Cards/i })).toBeDefined();
+    expect(screen.getByRole('button', { name: /Replay Pack Reveal/i })).toBeDefined();
   });
 
   it('does not display NEW! badge if card was already in inventory', async () => {
@@ -146,7 +146,7 @@ describe('SummonStage Component', () => {
     });
   });
 
-  it('reveals all cards when Reveal All Cards button is clicked', async () => {
+  it('reveals all cards immediately when Reveal All is clicked without needing another tap', async () => {
     const cards = createMockCards(2);
     vi.mocked(api.pullGacha).mockResolvedValueOnce({
       results: cards,
@@ -164,13 +164,11 @@ describe('SummonStage Component', () => {
     fireEvent.click(skipBtn);
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Reveal All Cards/i })).toBeDefined();
+      expect(screen.getByText('Celestial Warrior 1')).toBeDefined();
+      expect(screen.getByText('Celestial Warrior 2')).toBeDefined();
     });
 
-    const revealAllBtn = screen.getByRole('button', { name: /Reveal All Cards/i });
-    fireEvent.click(revealAllBtn);
-
-    // After clicking reveal all, the reveal all button disappears
+    // Both cards have been flipped and no further Reveal All button is needed
     expect(screen.queryByRole('button', { name: /Reveal All Cards/i })).toBeNull();
   });
 

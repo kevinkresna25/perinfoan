@@ -168,7 +168,10 @@ export const SummonStage: React.FC<SummonStageProps> = ({ onOpenRates }) => {
           count={results.length}
           highestRarityColor={highestRarityColor}
           onTear={() => setStage('card_peel')}
-          onSkip={() => setStage('summary_grid')}
+          onSkip={() => {
+            setRevealAll(true);
+            setStage('summary_grid');
+          }}
         />
       )}
 
@@ -177,8 +180,14 @@ export const SummonStage: React.FC<SummonStageProps> = ({ onOpenRates }) => {
         <CardStackPeel
           cards={results}
           newCardIds={newCardIds}
-          onComplete={() => setStage('summary_grid')}
-          onSkip={() => setStage('summary_grid')}
+          onComplete={() => {
+            setRevealAll(true);
+            setStage('summary_grid');
+          }}
+          onSkip={() => {
+            setRevealAll(true);
+            setStage('summary_grid');
+          }}
         />
       )}
 

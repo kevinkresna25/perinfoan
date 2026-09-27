@@ -22,7 +22,7 @@ describe('CardStackPeel Component', () => {
     },
   ];
 
-  it('renders card counter and current stack state', () => {
+  it('renders card counter and initial facedown state', () => {
     const handleComplete = vi.fn();
     const handleSkip = vi.fn();
 
@@ -36,11 +36,11 @@ describe('CardStackPeel Component', () => {
     );
 
     expect(screen.getByText(/Card 1 of 2/i)).toBeDefined();
-    expect(screen.getByRole('button', { name: /peel card/i })).toBeDefined();
+    expect(screen.getByRole('button', { name: /tap to reveal card/i })).toBeDefined();
     expect(screen.getByRole('button', { name: /reveal all/i })).toBeDefined();
   });
 
-  it('peels cards sequentially and triggers onComplete on last card', () => {
+  it('shows card face-up first upon reveal, then places under peeled cards on Next Card', () => {
     const handleComplete = vi.fn();
     const handleSkip = vi.fn();
 
@@ -53,24 +53,36 @@ describe('CardStackPeel Component', () => {
       />
     );
 
-    const peelBtn = screen.getByRole('button', { name: /peel card/i });
+    // Initial state: Card is facedown, click "Tap to Reveal Card"
+    const revealBtn = screen.getByRole('button', { name: /tap to reveal card/i });
+    fireEvent.click(revealBtn);
 
-    // Peel card 1
-    fireEvent.click(peelBtn);
+    // Card 1 is now shown face-up
     expect(screen.getByText('Card One')).toBeDefined();
-    expect(screen.getByText(/Card 2 of 2/i)).toBeDefined();
 
-    // Peel card 2 (last card)
-    fireEvent.click(peelBtn);
+    // Next Card button appears
+    const nextBtn = screen.getByRole('button', { name: /next card/i });
+    expect(nextBtn).toBeDefined();
+
+    // Click Next Card -> Card 1 placed in peeled cards dock, Card 2 appears on stack
+    fireEvent.click(nextBtn);
+    expect(screen.getByText(/Card 2 of 2/i)).toBeDefined();
+    expect(screen.getByText('Peeled Cards (1)')).toBeDefined();
+
+    // Reveal Card 2
+    const revealBtn2 = screen.getByRole('button', { name: /tap to reveal card/i });
+    fireEvent.click(revealBtn2);
     expect(screen.getByText('Card Two')).toBeDefined();
 
-    // After finishing last card, "Finish" or onComplete is triggered
-    const finishBtn = screen.getByRole('button', { name: /view summary/i });
-    fireEvent.click(finishBtn);
+    // For the last card, button changes to "View All Cards"
+    const viewAllBtn = screen.getByRole('button', { name: /view all cards/i });
+    fireEvent.click(viewAllBtn);
+
+    // Completion callback triggered
     expect(handleComplete).toHaveBeenCalledTimes(1);
   });
 
-  it('triggers onSkip when Reveal All is clicked', () => {
+  it('triggers onSkip when Reveal All is clicked without needing multiple clicks', () => {
     const handleComplete = vi.fn();
     const handleSkip = vi.fn();
 
