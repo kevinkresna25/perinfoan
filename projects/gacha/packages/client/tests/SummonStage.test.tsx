@@ -20,7 +20,7 @@ describe('SummonStage Component', () => {
 
   const mockCard1: Card = {
     id: 'card-1',
-    name: 'Celestial Dragon',
+    name: 'PERINFOAN Dragon',
     rarity: { id: 'r-ssr', name: 'SSR', color: '#FFD700' },
     image_url: '/uploads/cards/dragon.png',
     description: 'Ancient dragon of the stars.',
@@ -29,7 +29,7 @@ describe('SummonStage Component', () => {
   const createMockCards = (count: number): Card[] => {
     return Array.from({ length: count }, (_, i) => ({
       id: `card-${i + 1}`,
-      name: `Celestial Warrior ${i + 1}`,
+      name: `PERINFOAN Warrior ${i + 1}`,
       rarity: { id: 'r-sr', name: 'SR', color: '#9333EA' },
       image_url: `/uploads/cards/card-${i + 1}.png`,
       description: `Warrior ${i + 1} description`,
@@ -44,7 +44,7 @@ describe('SummonStage Component', () => {
   it('renders initial summon pedestal with buttons and drop rates link', () => {
     render(<SummonStage onOpenRates={mockOnOpenRates} />);
 
-    expect(screen.getByText('Summon Celestial Cards')).toBeDefined();
+    expect(screen.getByText('Summon PERINFOAN Cards')).toBeDefined();
     expect(screen.getByRole('button', { name: /Summon x1$/i })).toBeDefined();
     expect(screen.getByRole('button', { name: /Summon x10/i })).toBeDefined();
 
@@ -72,7 +72,7 @@ describe('SummonStage Component', () => {
 
     // Booster pack appears with Brewek Pack button
     await waitFor(() => {
-      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+      expect(screen.getByText(/PERINFOAN BOOSTER/i)).toBeDefined();
     });
 
     // Skip to reveal all to test summary grid
@@ -80,7 +80,7 @@ describe('SummonStage Component', () => {
     fireEvent.click(skipBtn);
 
     await waitFor(() => {
-      expect(screen.getByText('Celestial Dragon')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Dragon')).toBeDefined();
     });
 
     // Should have "NEW!" badge since local inventory didn't contain it
@@ -103,14 +103,14 @@ describe('SummonStage Component', () => {
     fireEvent.click(pull1Btn);
 
     await waitFor(() => {
-      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+      expect(screen.getByText(/PERINFOAN BOOSTER/i)).toBeDefined();
     });
 
     const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
     fireEvent.click(skipBtn);
 
     await waitFor(() => {
-      expect(screen.getByText('Celestial Dragon')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Dragon')).toBeDefined();
     });
 
     expect(screen.queryByText('NEW!')).toBeNull();
@@ -134,15 +134,15 @@ describe('SummonStage Component', () => {
     expect(inventory.recordPulls).toHaveBeenCalledWith(cards10);
 
     await waitFor(() => {
-      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+      expect(screen.getByText(/PERINFOAN BOOSTER/i)).toBeDefined();
     });
 
     const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
     fireEvent.click(skipBtn);
 
     await waitFor(() => {
-      expect(screen.getByText('Celestial Warrior 1')).toBeDefined();
-      expect(screen.getByText('Celestial Warrior 10')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Warrior 1')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Warrior 10')).toBeDefined();
     });
   });
 
@@ -157,15 +157,15 @@ describe('SummonStage Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /Summon x10/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+      expect(screen.getByText(/PERINFOAN BOOSTER/i)).toBeDefined();
     });
 
     const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
     fireEvent.click(skipBtn);
 
     await waitFor(() => {
-      expect(screen.getByText('Celestial Warrior 1')).toBeDefined();
-      expect(screen.getByText('Celestial Warrior 2')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Warrior 1')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Warrior 2')).toBeDefined();
     });
 
     // Both cards have been flipped and no further Reveal All button is needed
@@ -182,21 +182,21 @@ describe('SummonStage Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /Summon x1$/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+      expect(screen.getByText(/PERINFOAN BOOSTER/i)).toBeDefined();
     });
 
     const skipBtn = screen.getByRole('button', { name: /Skip to Reveal All/i });
     fireEvent.click(skipBtn);
 
     await waitFor(() => {
-      expect(screen.getByText('Celestial Dragon')).toBeDefined();
+      expect(screen.getByText('PERINFOAN Dragon')).toBeDefined();
     });
 
     const resetBtn = screen.getByRole('button', { name: /Summon Again/i });
     fireEvent.click(resetBtn);
 
-    expect(screen.queryByText('Celestial Dragon')).toBeNull();
-    expect(screen.getByText('Summon Celestial Cards')).toBeDefined();
+    expect(screen.queryByText('PERINFOAN Dragon')).toBeNull();
+    expect(screen.getByText('Summon PERINFOAN Cards')).toBeDefined();
   });
 
   it('displays error alert on pull failure', async () => {
@@ -211,6 +211,6 @@ describe('SummonStage Component', () => {
     });
 
     // Pedestal remains visible
-    expect(screen.getByText('Summon Celestial Cards')).toBeDefined();
+    expect(screen.getByText('Summon PERINFOAN Cards')).toBeDefined();
   });
 });

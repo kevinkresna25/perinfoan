@@ -8,7 +8,7 @@ describe('BoosterPack Component', () => {
     const handleTear = vi.fn();
     render(<BoosterPack count={10} onTear={handleTear} />);
 
-    expect(screen.getByText(/CELESTIAL BOOSTER/i)).toBeDefined();
+    expect(screen.getByText(/PERINFOAN BOOSTER/i)).toBeDefined();
     expect(screen.getByText(/10 CARDS/i)).toBeDefined();
     expect(screen.getByRole('button', { name: /rip pack|brewek pack|tear/i })).toBeDefined();
   });

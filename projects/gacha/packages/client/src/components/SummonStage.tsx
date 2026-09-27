@@ -109,7 +109,7 @@ export const SummonStage: React.FC<SummonStageProps> = ({ onOpenRates }) => {
                   <Sparkles className="w-8 h-8 text-white animate-bounce" />
                 </div>
                 <h3 className="text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-300 to-purple-300 tracking-wider">
-                  CELESTIAL BOOSTER
+                  PERINFOAN BOOSTER
                 </h3>
                 <span className="text-[10px] font-extrabold tracking-widest text-indigo-300 uppercase mt-0.5">
                   BREWEK PACK
@@ -129,7 +129,7 @@ export const SummonStage: React.FC<SummonStageProps> = ({ onOpenRates }) => {
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 mb-2">
-            Summon Celestial Cards
+            Summon PERINFOAN Cards
           </h2>
           <p className="text-slate-400 text-sm mb-6 max-w-md">
             Brewek Pokemon-Style Booster Pack! Rip the foil wrapper, peel through cards one-by-one with holographic edge peeks, and collect all rarities!

@@ -101,7 +101,7 @@ export const BoosterPack: React.FC<BoosterPackProps> = ({
             </div>
 
             <h3 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-pink-300 to-purple-300 tracking-wider">
-              CELESTIAL BOOSTER
+              PERINFOAN BOOSTER
             </h3>
             <p className="text-xs uppercase font-extrabold tracking-widest text-indigo-300 mt-1">
               LIMITED EDITION

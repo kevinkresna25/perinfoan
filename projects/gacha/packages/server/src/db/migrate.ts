@@ -35,7 +35,7 @@ export async function runMigrations(pool: Pool): Promise<void> {
 
   await pool.query(`
     INSERT IGNORE INTO cards (id, name, rarity_id, image_path, description) VALUES
-      ('card-ssr-1', 'Cosmic Dragon',     'rarity-ssr', 'starter-cosmic-dragon.png',     'Ancient sovereign of starlight and celestial nebulae.'),
+      ('card-ssr-1', 'Cosmic Dragon',     'rarity-ssr', 'starter-cosmic-dragon.png',     'Ancient sovereign of starlight and PERINFOAN nebulae.'),
       ('card-ssr-2', 'Solar Valkyrie',    'rarity-ssr', 'starter-solar-valkyrie.png',    'Bringer of cosmic dawn and eternal golden radiance.'),
       ('card-sr-1',  'Void Assassin',     'rarity-sr',  'starter-void-assassin.png',     'Silent phantom dancing between spatial dimensions.'),
       ('card-sr-2',  'Astral Sorceress',  'rarity-sr',  'starter-astral-sorceress.png',  'Weaver of stellar constellations and arcane prophecies.'),

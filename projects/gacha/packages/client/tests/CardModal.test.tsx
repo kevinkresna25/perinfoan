@@ -16,7 +16,7 @@ describe('CardModal Component', () => {
     name: 'Astral Valkyrie',
     rarity: { id: 'r-ssr', name: 'SSR', color: '#FFD700' },
     image_url: '/uploads/cards/valkyrie.png',
-    description: 'A radiant warrior of the celestial dawn.',
+    description: 'A radiant warrior of the PERINFOAN dawn.',
   };
 
   const mockInventoryItem: InventoryItem = {
@@ -36,7 +36,7 @@ describe('CardModal Component', () => {
 
     expect(screen.getByText('Astral Valkyrie')).toBeDefined();
     expect(screen.getByText('SSR')).toBeDefined();
-    expect(screen.getByText('A radiant warrior of the celestial dawn.')).toBeDefined();
+    expect(screen.getByText('A radiant warrior of the PERINFOAN dawn.')).toBeDefined();
 
     const img = screen.getByAltText('Astral Valkyrie') as HTMLImageElement;
     expect(img.src).toContain('/uploads/cards/valkyrie.png');
@@ -59,7 +59,7 @@ describe('CardModal Component', () => {
       />
     );
 
-    expect(screen.getByText('No lore recorded for this celestial card.')).toBeDefined();
+    expect(screen.getByText('No lore recorded for this PERINFOAN card.')).toBeDefined();
     expect(screen.queryByText(/Copies Pulled:/)).toBeNull();
     expect(screen.queryByText(/Discovered on/)).toBeNull();
   });

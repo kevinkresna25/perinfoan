@@ -58,7 +58,7 @@ export const CardModal: React.FC<CardModalProps> = ({ card, inventoryItem, onClo
 
           <h2 className="text-xl font-bold text-slate-100 mb-2">{card.name}</h2>
           <p className="text-sm text-slate-300 leading-relaxed mb-4">
-            {card.description || 'No lore recorded for this celestial card.'}
+            {card.description || 'No lore recorded for this PERINFOAN card.'}
           </p>
 
           {inventoryItem && (

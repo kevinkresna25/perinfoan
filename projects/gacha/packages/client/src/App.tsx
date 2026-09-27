@@ -18,7 +18,7 @@ export const App: React.FC = () => {
           <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer min-w-0" onClick={() => setTab('summon')}>
             <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400 shrink-0" />
             <span className="font-black text-sm sm:text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400 whitespace-nowrap">
-              CELESTIAL <span className="hidden xs:inline sm:inline">GACHA</span>
+              PERINFOAN <span className="hidden xs:inline sm:inline">GACHA</span>
             </span>
           </div>
 

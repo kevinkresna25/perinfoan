@@ -28,7 +28,7 @@ describe('AlbumView Component', () => {
       name: 'Sun Phoenix',
       rarity: { id: 'r-ssr', name: 'SSR', color: '#FFD700' },
       image_url: '/uploads/cards/phoenix.png',
-      description: 'Reborn in golden celestial fire.',
+      description: 'Reborn in golden PERINFOAN fire.',
     },
     {
       id: 'card-2',
@@ -152,13 +152,13 @@ describe('AlbumView Component', () => {
     fireEvent.click(screen.getByText('Sun Phoenix'));
 
     // Modal opens with lore description
-    expect(screen.getByText('Reborn in golden celestial fire.')).toBeDefined();
+    expect(screen.getByText('Reborn in golden PERINFOAN fire.')).toBeDefined();
 
     // Close modal
     const closeBtn = screen.getByRole('button', { name: /close/i });
     fireEvent.click(closeBtn);
 
-    expect(screen.queryByText('Reborn in golden celestial fire.')).toBeNull();
+    expect(screen.queryByText('Reborn in golden PERINFOAN fire.')).toBeNull();
   });
 
   it('does not open CardModal when clicking an undiscovered card', async () => {
@@ -176,7 +176,7 @@ describe('AlbumView Component', () => {
     fireEvent.click(screen.getAllByText('?')[0]);
 
     // Modal should not open
-    expect(screen.queryByText('Reborn in golden celestial fire.')).toBeNull();
+    expect(screen.queryByText('Reborn in golden PERINFOAN fire.')).toBeNull();
   });
 
   it('renders loading state initially while fetching album data', () => {

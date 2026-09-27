@@ -33,7 +33,7 @@ describe('App Component', () => {
   it('renders top navigation header and defaults to SummonStage', () => {
     render(<App />);
 
-    expect(screen.getByText(/CELESTIAL/)).toBeDefined();
+    expect(screen.getByText(/PERINFOAN/)).toBeDefined();
     expect(screen.getByRole('button', { name: /summon/i })).toBeDefined();
     expect(screen.getByRole('button', { name: /album/i })).toBeDefined();
     expect(screen.getByRole('button', { name: /admin/i })).toBeDefined();
@@ -76,7 +76,7 @@ describe('App Component', () => {
     expect(screen.getByTestId('album-view')).toBeDefined();
 
     // Click logo
-    fireEvent.click(screen.getByText(/CELESTIAL/));
+    fireEvent.click(screen.getByText(/PERINFOAN/));
     expect(screen.getByTestId('summon-stage')).toBeDefined();
   });
 
